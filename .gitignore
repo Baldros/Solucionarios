@@ -1,0 +1,35 @@
+# ─── Obsidian ────────────────────────────────────────────────────────
+# A configuração do vault é versionada de propósito (app.json,
+# appearance.json, core-plugins.json, graph.json): ela define como o
+# vault se comporta e precisa acompanhar as notas.
+# O estado da sessão, não — muda a cada vez que o Obsidian abre.
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+.trash/
+
+# Vaults aninhados: só o .obsidian da raiz é versionado.
+**/.obsidian/
+!/.obsidian/
+
+# ─── Sistema operacional ─────────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+._*
+
+# ─── Temporários de editores ─────────────────────────────────────────
+~$*.doc*
+~$*.xls*
+~$*.ppt*
+*.tmp
+*~
+
+# ─── Pasta de Imagens ────────────────────────────────────────────────
+# A pasta de imagens são anotações minhas feitas durante o processo de
+# estudo pessoal. Então ela não deve ser versionada, pois são temporária,
+# de serão descartadas dado o processamento da informação para arquivos .md.
+Images/
