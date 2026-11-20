@@ -10,7 +10,7 @@ Ficam como acertos a estratégia da dupla inclusão; a dúvida sobre a existênc
 
 ### A propriedade (2) tratada como algo a provar
 
-A tentativa procurou estabelecer fatos sobre um $Y$ qualquer, como a existência de um $y\in Y$ diferente de $x$, como se fosse preciso demonstrar (2). Mas (2) é hipótese, válida para todo $Y$, e uma hipótese universal se usa escolhendo um $Y$ que cumpra a condição e colhendo a conclusão. Por isso a escolha $Y=A\cup B$, que dá a inclusão que faltou, não chegou a ser considerada.
+A tentativa procurou estabelecer fatos sobre um $Y$ qualquer, como a existência de um $y\in Y$ diferente de $x$, como se fosse preciso demonstrar (2). Mas (2) é hipótese, válida para todo $Y$, e uma hipótese universal se usa escolhendo um $Y$ que cumpra a condição e colhendo a conclusão. Essa regra, a instanciação de uma afirmação universal, é de lógica, que o acervo ainda não tem; ela está entre as regras de inferência do extra Prova por casos. Por isso a escolha $Y=A\cup B$, que dá a inclusão que faltou, não chegou a ser considerada.
 
 ### O ⊂ do livro lido como inclusão estrita
 
@@ -26,19 +26,19 @@ A tentativa traduziu $A\subseteq X$ e $B\subseteq X$ por "existe $a\in A$ ou $b\
 
 ### A tese usada como ponto de partida
 
-Um dos rascunhos parte de $X=A\cup B$ para extrair propriedades de $X$. Isso supõe o que se quer provar. O ponto de partida são as hipóteses (1) e (2); a igualdade é o ponto de chegada.
+Um dos rascunhos parte de $X=A\cup B$ para extrair propriedades de $X$. Isso supõe o que se quer provar. O ponto de partida são as hipóteses (1) e (2); a igualdade é o ponto de chegada. Para provar uma igualdade de conjuntos, parte-se de um elemento de um dos lados e chega-se ao outro, como descreve a nota Axioma da Extensão.
 
 ### Hipótese apresentada como resultado
 
-Depois do desvio por complementares, a tentativa concluiu que "isso demonstra que $A,B\subseteq X$". Mas $A\subseteq X$ e $B\subseteq X$ são a própria hipótese (1), não algo a demonstrar.
+Depois do desvio por complementares, a tentativa concluiu que "isso demonstra que $A,B\subseteq X$". Mas $A\subseteq X$ e $B\subseteq X$ são a própria hipótese (1), não algo a demonstrar. A distinção entre hipótese e tese é da estrutura de uma demonstração, que o acervo não trata; fica entre as pistas de lógica do extra Prova por casos.
 
 ### A propriedade (2) como consequência de (1)
 
-A tentativa afirmou que (2) surge como consequência de (1). As duas são independentes: $A\cup B\cup\{z\}$, com $z\notin A\cup B$, satisfaz (1) e falha (2) para $Y=A\cup B$. Cada propriedade fornece uma das inclusões, e nenhuma basta sozinha.
+A tentativa afirmou que (2) surge como consequência de (1). As duas são independentes: $A\cup B\cup\{z\}$, com $z\notin A\cup B$, satisfaz (1), porque contém $A$ e $B$ (nota Operações de Conjuntos), e falha (2) para $Y=A\cup B$, que não contém $z$. Cada propriedade fornece uma das inclusões, e nenhuma basta sozinha.
 
 ### "Não implica" lido como "implica a negação"
 
-De "$A\subseteq Y$ e $B\subseteq Y$ não implicam $\forall y\in Y,\ y\in X$", a tentativa passou a "existe $y\in Y$ tal que $y\neq x$". Há dois erros. Uma afirmação não implicar $P$ não significa que ela implique a negação de $P$; significa só que $P$ pode falhar. E a negação de $\forall y\in Y,\ y\in X$ é $\exists y\in Y,\ y\notin X$: a não pertinência a um conjunto, e não a desigualdade entre dois elementos.
+De "$A\subseteq Y$ e $B\subseteq Y$ não implicam $\forall y\in Y,\ y\in X$", a tentativa passou a "existe $y\in Y$ tal que $y\neq x$". Há dois erros. Uma afirmação não implicar $P$ não significa que ela implique a negação de $P$; significa só que $P$ pode falhar. E a negação de $\forall y\in Y,\ y\in X$, isto é, de $Y\subseteq X$, é $\exists y\in Y,\ y\notin X$ (nota Subconjunto, em "Negar a inclusão"): a não pertinência a um conjunto, e não a desigualdade entre dois elementos.
 
 ### Complementar da interseção confundido com a diferença simétrica
 
@@ -50,7 +50,7 @@ A tentativa escreveu $(A\cap B^c)\cup(B\cap A^c)=A\cap\Omega\cap A^c$ e, mais ad
 
 ### Conjunto fundamental identificado com X
 
-A tentativa cogitou $\Omega=X$ porque os dois contêm $A$ e $B$. Conter $A$ e $B$ não determina um conjunto: $\Omega$ é o maior deles, e $X$, por (2), o menor. Supor $\Omega=X$ seria supor $\Omega=A\cup B$, que embute a tese.
+A tentativa cogitou $\Omega=X$ porque os dois contêm $A$ e $B$. Conter $A$ e $B$ não determina um conjunto: o conjunto fundamental contém todos os conjuntos da discussão (notas Conjunto e Complementar) e é o maior deles, e $X$, por (2), o menor. Supor $\Omega=X$ seria supor $\Omega=A\cup B$, que embute a tese.
 
 ## Erros de escrita
 
@@ -86,7 +86,7 @@ Expressões como $A\cup B\cap(A\cap B)^c$ e $A\cap B^c\cup B\cap A^c$ ficaram se
 
 ### A segunda inclusão ficou sem demonstração
 
-É a incompletude decisiva, a que impede a tentativa de demonstrar o resultado. A conclusão $X=A\cup B$ foi declarada com base em $A\cup B\subseteq X$ e numa leitura da propriedade (2), sem que $X\subseteq A\cup B$ fosse provado, e a igualdade exige as duas inclusões. A solução compilada a completa aplicando (2) com $Y=A\cup B$, que contém $A$ e $B$ pela definição de união.
+É a incompletude decisiva, a que impede a tentativa de demonstrar o resultado. A conclusão $X=A\cup B$ foi declarada com base em $A\cup B\subseteq X$ e numa leitura da propriedade (2), sem que $X\subseteq A\cup B$ fosse provado, e a igualdade exige as duas inclusões (nota Axioma da Extensão). A solução compilada a completa aplicando (2) com $Y=A\cup B$, que contém $A$ e $B$ pela definição de união (nota Operações de Conjuntos).
 
 ### O "para todo Y" da propriedade (2) ficou implícito
 
@@ -94,7 +94,7 @@ A tentativa escreveu (2) como o livro, "se $Y\supset A$ e $Y\supset B$, então $
 
 ### A primeira inclusão afirmada sem argumento
 
-De $A\subseteq X$ e $B\subseteq X$, a tentativa passou direto a $X\supseteq A\cup B$, e a versão geral, "$A\subseteq Y$ e $B\subseteq Y$ dão $\forall x\in A\cup B,\ x\in Y$", também ficou sem justificativa. O passo é verdadeiro, mas é metade da demonstração e pede o argumento: tomado $x\in A\cup B$, tem-se $x\in A$ ou $x\in B$, e em cada caso $x\in X$. A solução compilada faz essa prova por casos.
+De $A\subseteq X$ e $B\subseteq X$, a tentativa passou direto a $X\supseteq A\cup B$, e a versão geral, "$A\subseteq Y$ e $B\subseteq Y$ dão $\forall x\in A\cup B,\ x\in Y$", também ficou sem justificativa. O passo é verdadeiro, mas é metade da demonstração e pede o argumento: tomado $x\in A\cup B$, tem-se $x\in A$ ou $x\in B$ pela definição de união (nota Operações de Conjuntos), e em cada caso $x\in X$. A solução compilada faz essa prova por casos.
 
 ### A dupla inclusão sem justificativa
 
@@ -102,4 +102,4 @@ A tentativa enunciou que provar $X=A\cup B$ é provar as duas inclusões, sem di
 
 ### As hipóteses não foram interpretadas
 
-A tentativa reescreveu (1) e (2) em símbolos, mas não disse o que elas afirmam juntas: que $X$ é o menor conjunto que contém $A$ e $B$. É essa leitura que sugere a estratégia, porque cada propriedade dá uma das inclusões, e a solução compilada a apresenta antes da demonstração.
+A tentativa reescreveu (1) e (2) em símbolos, mas não disse o que elas afirmam juntas: que $X$ é o menor conjunto que contém $A$ e $B$. É essa leitura que sugere a estratégia, porque cada propriedade dá uma das inclusões, e a solução compilada a apresenta antes da demonstração. A propriedade por trás dessa leitura, a de a união ser o menor conjunto que contém os dois, ficou registrada como insight na nota Operações de Conjuntos.
