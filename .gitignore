@@ -28,6 +28,12 @@ $RECYCLE.BIN/
 *.tmp
 *~
 
+# ─── Ambientes Python ────────────────────────────────────────────────
+# Ambiente virtual usado para rodar as ferramentas da skill de compilar
+# exercícios (cores da tinta, verificação dos .md); cada máquina cria o seu.
+.venv/
+__pycache__/
+
 # ─── Pasta de Imagens ────────────────────────────────────────────────
 # A pasta de imagens são anotações minhas feitas durante o processo de
 # estudo pessoal. Então ela não deve ser versionada, pois são temporária,
