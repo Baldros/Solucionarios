@@ -160,6 +160,7 @@ $$
 > [!note] A inclusão permite que os conjuntos coincidam
 > Dizer $X\subseteq Y$ é dizer que **todo elemento de $X$ pertence a $Y$**. Isso admite $X=Y$. Não há exigência de encontrar um elemento de $Y$ fora de $X$, nem um elemento diferente daquele que estamos acompanhando. Com a escolha $Y=A\cup B$, o que precisamos é justamente mostrar que o mesmo $x\in X$ pertence à união.
 
+## Conclusão
 Deste modo,
 
 $$
