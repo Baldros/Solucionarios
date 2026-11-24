@@ -9,8 +9,8 @@ cor e claro.
 Uso, a partir da raiz do repositório (a .venv é ignorada pelo git):
 
     py -V:3.13 -m venv .venv
-    .venv\\Scripts\\python -m pip install -r .agents/skills/compilar-exercicios/ferramentas/requirements.txt
-    .venv\\Scripts\\python .agents/skills/compilar-exercicios/ferramentas/tinta.py <comando> ...
+    .venv\\Scripts\\python -m pip install -r .agents/skills/consolidar-exercicio/ferramentas/requirements.txt
+    .venv\\Scripts\\python .agents/skills/consolidar-exercicio/ferramentas/tinta.py <comando> ...
 
 Comandos:
 

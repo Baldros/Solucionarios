@@ -49,6 +49,29 @@ O acervo não tem notas de lógica.
 """
 
 
+PROCESSO = """Registro das orientações e revisões observadas na conversa.
+
+## Ponto de partida
+
+A tentativa já tinha uma inclusão e precisava justificar a recíproca.
+
+## Ciclos de revisão
+
+### Distinguir as duas direções
+
+Foi retomada a definição de inclusão da nota Subconjunto. Depois da orientação,
+o usuário reformulou a recíproca e a justificou na versão revista.
+
+### Explicitar uma regra lógica
+
+O acervo não cobre a regra formal. O encaminhamento para estudo foi combinado.
+
+## Síntese do aprendizado
+
+A versão final justifica as duas inclusões e conclui pela antissimetria.
+"""
+
+
 class Base(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
@@ -153,6 +176,84 @@ class TestSolucionarios(Base):
         ruim = self.escrever("Extras fora do acervo.md", "Intro.\n\n## Exercício 1.1\n\n### Ligação\n\nTexto.\n")
         self.assertEqual(self.regras(bom), set())
         self.assertIn(("capitulo", "erro"), self.regras(ruim))
+
+
+class TestProcessoDeResolucao(Base):
+    def test_novo_par_sem_arquivo_de_erros(self):
+        solucao = self.escrever("Exercício 9.9.md", SOLUCAO)
+        processo = self.escrever("Exercício 9.9 - Processo de resolução.md", PROCESSO)
+        self.assertEqual(verificar.tipo(processo), "processo")
+        self.assertEqual(self.regras(solucao), set())
+        self.assertEqual(self.regras(processo), set())
+
+    def test_processo_nao_substitui_solucao_de_outro_exercicio(self):
+        solucao = self.escrever("Exercício 9.9.md", SOLUCAO)
+        processo = self.escrever("Exercício 9.8 - Processo de resolução.md", PROCESSO)
+        self.assertIn(("par", "erro"), self.regras(solucao))
+        self.assertIn(("par", "erro"), self.regras(processo))
+
+    def test_secoes_do_processo_faltando_ou_fora_de_ordem(self):
+        self.escrever("Exercício 9.9.md", SOLUCAO)
+        caminho = self.escrever(
+            "Exercício 9.9 - Processo de resolução.md",
+            PROCESSO.replace("## Síntese do aprendizado", "## Outras"),
+        )
+        self.assertIn(("secoes", "erro"), self.regras(caminho))
+        trocado = PROCESSO.replace("## Ponto de partida", "## TROCA")
+        trocado = trocado.replace("## Ciclos de revisão", "## Ponto de partida")
+        trocado = trocado.replace("## TROCA", "## Ciclos de revisão")
+        caminho.write_text(trocado, encoding="utf-8")
+        self.assertIn(("secoes", "erro"), self.regras(caminho))
+
+    def test_cada_gap_precisa_de_fundamentacao(self):
+        self.escrever("Exercício 9.9.md", SOLUCAO)
+        caminho = self.escrever(
+            "Exercício 9.9 - Processo de resolução.md",
+            PROCESSO.replace("da nota Subconjunto", "discutida na conversa"),
+        )
+        ponte = [a for a in verificar.verificar_arquivo(caminho) if a.regra == "ponte"]
+        self.assertEqual(len(ponte), 1)
+        self.assertEqual(ponte[0].nivel, "aviso")
+        self.assertIn("Distinguir as duas direções", ponte[0].mensagem)
+
+    def test_registro_sem_gaps_nao_exige_entrada_inventada(self):
+        self.escrever("Exercício 9.9.md", SOLUCAO)
+        caminho = self.escrever(
+            "Exercício 9.9 - Processo de resolução.md",
+            """Registro do processo.
+
+## Ponto de partida
+
+A primeira tentativa já estava adequada à teoria.
+
+## Ciclos de revisão
+
+Não houve gap nem necessidade de orientação corretiva.
+
+## Síntese do aprendizado
+
+A primeira versão foi validada, sem ciclo de correção.
+""",
+        )
+        self.assertEqual(self.regras(caminho), set())
+
+    def test_processo_tambem_respeita_separacao_dos_vaults(self):
+        self.escrever("Exercício 9.9.md", SOLUCAO)
+        caminho = self.escrever(
+            "Exercício 9.9 - Processo de resolução.md",
+            PROCESSO + "\nVer [[Subconjunto]], obsidian://open e a página 5.\n",
+        )
+        self.assertTrue(
+            {("wikilink", "erro"), ("vault", "erro"), ("pagina", "erro")}
+            <= self.regras(caminho)
+        )
+
+    def test_abertura_concepcao_preserva_modelo_atual(self):
+        self.escrever("Exercício 9.9 - Processo de resolução.md", PROCESSO)
+        caminho = self.escrever(
+            "Exercício 9.9.md", SOLUCAO.replace("## Enunciado", "## Concepção")
+        )
+        self.assertEqual(self.regras(caminho), set())
 
 
 if __name__ == "__main__":

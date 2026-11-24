@@ -1,4 +1,4 @@
-"""Verifica os arquivos compilados pela skill compilar-exercicios.
+"""Verifica os arquivos compilados pela skill consolidar-exercicio.
 
 Regras gerais, que valem para qualquer nota, inclusive as do Notas-de-Estudo
 que recebem um [!insight]:
@@ -8,7 +8,7 @@ que recebem um [!insight]:
     callout       todo callout tem título específico, não vazio nem genérico
     callout-link  nenhum wikilink dentro de callout
 
-Regras dos arquivos do Solucionários (solução, erros e extras):
+Regras dos arquivos do Solucionários (solução, processo, erros históricos e extras):
 
     wikilink      nenhum wikilink: o Solucionários e o Notas-de-Estudo são vaults
                   separados, e a teoria é citada pelo nome, em texto simples
@@ -17,10 +17,17 @@ Regras dos arquivos do Solucionários (solução, erros e extras):
 
 Da solução (Exercício N.M.md):
 
-    enunciado     começa por "## Enunciado"
+    enunciado     começa por "## Enunciado" ou "## Concepção"
     callout-tipo  só callouts [!note], que são as reflexões azuis
 
-Do arquivo de erros (Exercício N.M - Erros.md):
+Do processo (Exercício N.M - Processo de resolução.md):
+
+    secoes        Ponto de partida, Ciclos de revisão e Síntese do aprendizado,
+                  nessa ordem
+    ponte         (aviso) gap em Ciclos de revisão sem nota teórica citada
+                  nem indicação de ausência de cobertura no acervo
+
+Do arquivo histórico de erros (Exercício N.M - Erros.md):
 
     secoes        Avaliação, Erros de raciocínio, Erros de escrita e
                   Incompletudes, nessa ordem
@@ -34,11 +41,12 @@ Dos extras (Extras no acervo.md, Extras fora do acervo.md):
 
 Da pasta de capítulo:
 
-    par           toda solução tem o seu arquivo de erros, e vice-versa
+    par           toda solução tem seu processo (ou erros históricos), e todo
+                  registro tem sua solução
 
 Uso, a partir da raiz do repositório:
 
-    .venv\\Scripts\\python .agents/skills/compilar-exercicios/ferramentas/verificar.py [caminhos...]
+    .venv\\Scripts\\python .agents/skills/consolidar-exercicio/ferramentas/verificar.py [caminhos...]
 
 Sem caminhos, verifica os .md do repositório fora de pastas ocultas e de
 Images/, menos o README.md. Sai com código 1 se houver erro; avisos não mudam
@@ -54,6 +62,7 @@ from pathlib import Path
 
 SECOES_ERROS = ["Avaliação", "Erros de raciocínio", "Erros de escrita", "Incompletudes"]
 SECOES_COM_PONTE = {"Erros de raciocínio", "Incompletudes"}
+SECOES_PROCESSO = ["Ponto de partida", "Ciclos de revisão", "Síntese do aprendizado"]
 TITULOS_GENERICOS = {
     "nota", "notas", "note", "observação", "observações", "obs", "insight", "reflexão", "reflexões",
 }
@@ -61,6 +70,7 @@ EXTRAS = {"Extras no acervo.md", "Extras fora do acervo.md"}
 
 RE_SOLUCAO = re.compile(r"^Exercício \d+(?:\.\d+)*\.md$")
 RE_ERROS = re.compile(r"^Exercício \d+(?:\.\d+)* - Erros\.md$")
+RE_PROCESSO = re.compile(r"^Exercício \d+(?:\.\d+)* - Processo de resolução\.md$")
 RE_CALLOUT = re.compile(r"^>\s*\[!([^\]]+)\][+-]?\s*(.*)$")
 RE_PAGINA = re.compile(r"\bp[áa]g(?:ina|inas|\.)|\.(?:png|jpe?g|webp)\b", re.IGNORECASE)
 RE_CITA_ACERVO = re.compile(r"\bnotas?\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ]|\bacervo\b")
@@ -85,6 +95,8 @@ class Achado:
 
 def tipo(caminho: Path) -> str:
     nome = caminho.name
+    if RE_PROCESSO.match(nome):
+        return "processo"
     if RE_ERROS.match(nome):
         return "erros"
     if RE_SOLUCAO.match(nome):
@@ -173,30 +185,35 @@ def checar_solucionarios(caminho: Path, linhas: list[str]) -> list[Achado]:
 
 def checar_solucao(caminho: Path, linhas: list[str]) -> list[Achado]:
     primeira = next(((n, l) for n, l in enumerate(linhas, start=1) if l.strip()), None)
-    if primeira is None or primeira[1].strip() != "## Enunciado":
+    if primeira is None or primeira[1].strip() not in {"## Enunciado", "## Concepção"}:
         linha = primeira[0] if primeira else 1
-        return [Achado(caminho, linha, "erro", "enunciado", 'a solução deve começar por "## Enunciado"')]
+        return [Achado(caminho, linha, "erro", "enunciado", 'a solução deve começar por "## Enunciado" ou "## Concepção"')]
     return []
 
 
-def checar_erros(caminho: Path, linhas: list[str]) -> list[Achado]:
+def checar_registro(
+    caminho: Path,
+    linhas: list[str],
+    secoes_esperadas: list[str],
+    secoes_com_ponte: set[str],
+) -> list[Achado]:
     achados = []
     secoes = [(n, l[3:].strip()) for n, l in enumerate(linhas, start=1) if l.startswith("## ")]
     nomes = [nome for _, nome in secoes]
-    for esperada in SECOES_ERROS:
+    for esperada in secoes_esperadas:
         if esperada not in nomes:
             achados.append(Achado(caminho, 1, "erro", "secoes", f'falta a seção "## {esperada}"'))
-    presentes = [nome for nome in nomes if nome in SECOES_ERROS]
-    if presentes != [s for s in SECOES_ERROS if s in presentes]:
-        achados.append(Achado(caminho, 1, "erro", "secoes", "seções fora da ordem: " + ", ".join(SECOES_ERROS)))
+    presentes = [nome for nome in nomes if nome in secoes_esperadas]
+    if presentes != [s for s in secoes_esperadas if s in presentes]:
+        achados.append(Achado(caminho, 1, "erro", "secoes", "seções fora da ordem: " + ", ".join(secoes_esperadas)))
     for n, nome in secoes:
-        if nome not in SECOES_ERROS:
+        if nome not in secoes_esperadas:
             achados.append(Achado(caminho, n, "aviso", "secoes", f'seção inesperada: "## {nome}"'))
 
     secao_atual, entrada, inicio, corpo = None, None, 0, []
 
     def fechar():
-        if entrada is not None and secao_atual in SECOES_COM_PONTE:
+        if entrada is not None and secao_atual in secoes_com_ponte:
             if not RE_CITA_ACERVO.search(" ".join([entrada, *corpo])):
                 achados.append(
                     Achado(caminho, inicio, "aviso", "ponte", f'"{entrada}" não cita nota do acervo')
@@ -215,6 +232,15 @@ def checar_erros(caminho: Path, linhas: list[str]) -> list[Achado]:
     return achados
 
 
+def checar_erros(caminho: Path, linhas: list[str]) -> list[Achado]:
+    """Mantém a validação dos registros anteriores, sem migrá-los."""
+    return checar_registro(caminho, linhas, SECOES_ERROS, SECOES_COM_PONTE)
+
+
+def checar_processo(caminho: Path, linhas: list[str]) -> list[Achado]:
+    return checar_registro(caminho, linhas, SECOES_PROCESSO, {"Ciclos de revisão"})
+
+
 def checar_extras(caminho: Path, linhas: list[str]) -> list[Achado]:
     return [
         Achado(caminho, n, "erro", "capitulo", f'seção que não é capítulo: "{l.strip()}"')
@@ -225,11 +251,13 @@ def checar_extras(caminho: Path, linhas: list[str]) -> list[Achado]:
 
 def checar_par(caminho: Path, tipo_arquivo: str) -> list[Achado]:
     if tipo_arquivo == "solucao":
-        par = caminho.with_name(caminho.stem + " - Erros.md")
-        if not par.exists():
-            return [Achado(caminho, 1, "erro", "par", f'falta o arquivo de erros "{par.name}"')]
-    elif tipo_arquivo == "erros":
-        par = caminho.with_name(caminho.name.replace(" - Erros.md", ".md"))
+        processo = caminho.with_name(caminho.stem + " - Processo de resolução.md")
+        legado = caminho.with_name(caminho.stem + " - Erros.md")
+        if not processo.exists() and not legado.exists():
+            return [Achado(caminho, 1, "erro", "par", f'falta o processo de resolução "{processo.name}" (ou um registro histórico de erros)')]
+    elif tipo_arquivo in {"processo", "erros"}:
+        sufixo = " - Processo de resolução.md" if tipo_arquivo == "processo" else " - Erros.md"
+        par = caminho.with_name(caminho.name.removesuffix(sufixo) + ".md")
         if not par.exists():
             return [Achado(caminho, 1, "erro", "par", f'falta a solução "{par.name}"')]
     return []
@@ -252,6 +280,8 @@ def verificar_arquivo(caminho: Path, texto: str | None = None) -> list[Achado]:
         achados += checar_solucionarios(caminho, linhas)
     if tipo_arquivo == "solucao":
         achados += checar_solucao(caminho, linhas)
+    elif tipo_arquivo == "processo":
+        achados += checar_processo(caminho, linhas)
     elif tipo_arquivo == "erros":
         achados += checar_erros(caminho, linhas)
     elif tipo_arquivo == "extras":
@@ -285,7 +315,7 @@ def coletar(alvos: list[Path]) -> list[Path]:
 def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
-    parser = argparse.ArgumentParser(description="Verifica os arquivos compilados pela skill compilar-exercicios.")
+    parser = argparse.ArgumentParser(description="Verifica os arquivos compilados pela skill consolidar-exercicio.")
     parser.add_argument("caminhos", nargs="*", type=Path)
     args = parser.parse_args(argv)
 
