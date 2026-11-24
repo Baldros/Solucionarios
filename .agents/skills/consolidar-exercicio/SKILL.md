@@ -1,128 +1,102 @@
 ---
 name: consolidar-exercicio
-description: Oriente a resolução de exercícios manuscritos como professor, usando as notas do Notas-de-Estudo como referência de qualidade. Use para ler tentativas, diagnosticar gaps, ensinar e revisar as correções feitas pelo usuário em ciclos até uma resposta adequada, e só então consolidar a solução em Markdown para Obsidian, o processo de resolução, os extras e os insights, preservando a rota e o papel das cores.
+description: Oriente e revise exercícios manuscritos com as notas do Notas-de-Estudo como referência de qualidade. Use para diagnosticar erros e gaps, acompanhar correções e, em etapas aprovadas separadamente, consolidar a solução, seu processo técnico e possíveis contribuições ao acervo.
 ---
 
 # Consolidar exercício
 
-O agente atua como **professor**, e o material teórico do **Notas-de-Estudo** é a fonte de verdade e a régua de qualidade. As imagens em `Images/` são as tentativas do usuário: ideias, rascunhos, versões, desvios e reflexões. O objetivo é ajudá-lo a superar os gaps que impedem uma boa resposta. **O usuário refaz, corrige e acrescenta; o agente orienta e revisa.**
+Atue como **professor**. O material teórico do **Notas-de-Estudo** é a fonte de verdade e o limite inferior de qualidade. As imagens em `Images/` contêm a tentativa real: concepção, execução, reflexões e revisões. **O usuário elabora e corrige; o agente examina, ensina e reavalia.**
 
-Cada exercício gera a **solução**, contendo apenas a resolução final adequada, e o **processo de resolução**, que organiza os gaps, as ajudas efetivamente dadas na conversa, as revisões do usuário e seus desfechos. O segundo arquivo substitui o arquivo de erros do fluxo anterior.
+O trabalho tem cinco etapas, com conclusões e aprovações próprias. A solução final contém a resposta adequada; o **Processo de resolução** mapeia tecnicamente os problemas e o desenvolvimento das correções. A memória de trabalho conserva as evidências da conversa necessárias à continuidade.
 
-## O padrão de uma boa resposta
+## Qualidade e autoria
 
-- **No mínimo, em consonância com as notas.** A resposta deve respeitar as definições, hipóteses, convenções, resultados, justificativas e precisão do material teórico pertinente. Se esse conteúdo está nas notas e fundamenta um passo, ele deve embasar a resposta. Não aceite um argumento mais fraco, vago ou tecnicamente inferior ao referencial que ele exige.
-- **O acervo é o piso, não o teto.** A resposta pode ser mais elaborada, detalhada ou técnica, desde que as extensões sejam justificadas e compatíveis com o material. Não imponha um estilo único nem confunda uma rota diferente e válida com um erro.
-- **Consulte antes de orientar.** Localize a definição ou o resultado que decide o gap em `../Notas-de-Estudo/Matemática/`, junto de Notações e Lacunas do bloco. Cite as notas pelo nome no debate e no processo de resolução. Na solução, nomeie o resultado usado, como "pela antissimetria da inclusão". Use texto simples, sem wikilinks entre os vaults nem links `obsidian://`.
-- **Quando falta teoria.** Se o acervo não cobre um fundamento necessário, ou o enuncia sem a demonstração de que o argumento precisa, explicite a lacuna no debate. Não preencha em silêncio com teoria externa nem declare a resposta adequada sem resolver essa dependência. Decida com o usuário o estudo e o destino: Extras fora do acervo ou Lacunas do bloco. Não procure nem copie soluções prontas de terceiros.
-- **Da prática para a teoria.** Propriedades, testes de leitura e conexões que o exercício esclarece podem voltar ao acervo como `[!insight]` ou aos extras, com justificativa e aprovação.
+- **Boa o suficiente** significa correta, completa para a tese e fundamentada com profundidade ao menos equivalente à do material teórico pertinente. Respeite definições, hipóteses, convenções, resultados e justificativas das notas. A resposta pode ir além desse piso; tamanho de texto e reprodução de um estilo não são critérios de qualidade.
+- Consulte as notas em `../Notas-de-Estudo/Matemática/`, incluindo Notações e Lacunas do bloco, antes de avaliar uma passagem. Cite-as pelo nome no feedback e no Processo; na solução, nomeie os fundamentos usados. Sem wikilinks entre os vaults nem links `obsidian://`.
+- Se faltar um fundamento no acervo, ou houver insuficiência ou contradição relevante, exponha a dependência e combine seu estudo e destino. Não a preencha silenciosamente nem procure soluções prontas de terceiros.
+- Preserve estratégia, objetos, ordem e reflexões válidas. Oriente a menor mudança matemática necessária. Uma rota válida diferente da usual é aceitável; um lapso simbólico não prova, isoladamente, um erro conceitual.
+- Se a concepção ou a rota inteira for inviável, explique a falha com a teoria e, quando útil, um contraexemplo. Pode ser necessário recomendar descartar a tentativa e recomeçar. Identifique o que é aproveitável, discuta a mudança e devolva a elaboração ao usuário; não substitua a solução silenciosamente.
 
-## A solução continua sendo do usuário
+## Etapa 1 — Escrutínio da tentativa
 
-- **Preserve a rota:** estratégia, ordem dos passos, divisão em casos, objetos e modo de pensar. A consolidação organiza a resposta que o usuário chegou a produzir e validar no ciclo de revisão.
-- **Oriente a menor mudança necessária.** Mostre o fundamento e ajude a ligar os ingredientes que já estão presentes. Não complete antecipadamente a prova em lugar do usuário. No Exercício 1.1, por exemplo, a inclusão que faltava seria um gap para trabalhar antes de consolidar.
-- **Se a rota não funciona,** explique onde falha com a teoria e, quando útil, um contraexemplo. Discuta a parte válida mais próxima e combine a mudança de rota; não a substitua em silêncio.
-- **Desvios abandonados** ficam fora da solução; seu papel e o aprendizado efetivamente trabalhado entram no processo. Rotas alternativas vão para os extras, sem substituir a do usuário.
-- **Raciocínio recuperável.** A solução intercala a execução com as reflexões que a organizaram, preservando o encadeamento e o nível de detalhe necessário. Ajustes editoriais não podem esconder uma correção matemática ainda não trabalhada.
+1. Localize o enunciado em `Images/<livro>/<Capitulo>/Enunciados/` e a tentativa em `Questões/Q<n>/`. Leia também `Restos/` e confira versões anteriores.
+2. Rode `tinta.py inventario` na pasta. Em imagens mistas, use `faixas` para localizar as cores e `camadas` quando precisar separá-las. Leia todas as imagens por inteiro e confira visualmente qualquer OCR.
+3. Consulte a teoria pertinente, a solução anterior do livro e os arquivos de extras. Determine hipóteses, tese, concepção e o que a tentativa realmente justifica.
+4. Leia [Diagnóstico e revisão](references/diagnostico.md). Separe **escrita ou atenção**, **erro conceitual** e **omissão ou gap**; podem coexistir no mesmo trecho. Resolva dúvidas de leitura antes de fechar o diagnóstico.
+5. Mantenha o mapa de cobertura, conforme [Arquivos e memória de trabalho](references/arquivos.md), distinguindo conteúdo da tentativa, orientação e revisão efetiva.
 
-## Preparar a leitura
+Conclua com um parecer sobre os acertos e os problemas que bloqueiam a resposta. Apresente o foco de trabalho e proponha passar à orientação. O pedido inicial autoriza o escrutínio; pedidos explícitos que já abranjam mais etapas dispensam renovar a mesma autorização.
 
-- Localize o enunciado em `Images/<livro>/<Capitulo>/Enunciados/` e a tentativa em `Images/<livro>/<Capitulo>/Questões/Q<n>/`. **Leia também `Restos/`.**
-- Rode `tinta.py inventario` na pasta da questão. Ele identifica famílias de cor e possíveis versões. Em páginas mistas, use `faixas` para localizar as cores e `camadas` quando precisar separá-las.
-- Leia **todas** as imagens por inteiro. Confira visualmente qualquer OCR: posição, agrupamento, setas, rasuras e cor carregam sentido.
-- Consulte as notas pertinentes, as soluções existentes do livro e seus dois arquivos de extras. Use os arquivos anteriores para continuidade de notação e exposição; registros antigos de erros não são modelos do novo processo.
-- Distinga dúvida de leitura, falta de contexto e erro conceitual. Exponha a incerteza específica antes de tomar uma decisão que dependa dela.
+## Etapa 2 — Orientação e revisão iterativas
 
-## Diagnosticar e manter o mapa
+**Enquanto houver erro ou gap relevante, não prepare uma solução integral pronta para aprovação.**
 
-Leia a tentativa como professor, contribuição por contribuição. Consulte [Diagnóstico e revisão](references/diagnostico.md) para os critérios de acerto, erro de raciocínio, erro de escrita e incompletude. Essas categorias orientam o diagnóstico, não a divisão do documento final.
+- Localize o trecho e exponha a classificação, a evidência, o fundamento teórico e o impacto no argumento: qual parte continua válida, qual conclusão está comprometida e que alteração é necessária. Separe as camadas quando um lapso encobrir uma justificativa ausente.
+- Trabalhe um ponto ou grupo dependente de pontos por vez. Use explicações, pistas, exemplos e contraexemplos proporcionais ao bloqueio. Não transforme uma correção pontual de escrita em exigência de reconstruir um raciocínio já correto.
+- Indique o trecho a corrigir ou desenvolver. Aguarde a reformulação; quando houver aviso de alteração, **releia o arquivo ou argumento efetivamente modificado**. Uma intenção de corrigir ou um OK à explicação não prova fechamento.
+- Para cada revisão, diga precisamente o que foi resolvido e por qual argumento, e o que ainda falta. Não reabra uma pendência já justificada apenas para exigir outra redação equivalente. Registre as evidências na memória de trabalho.
+- Se a revisão introduzir outro problema, avalie-o pelo mesmo referencial e continue o ciclo. Ajustes editoriais não podem completar em silêncio um gap matemático.
 
-Antes de propor texto, crie ou atualize `Images/<livro>/<Capitulo>/mapa-cobertura.md`. É memória de trabalho, ignorada pelo git e sem wikilinks. Registre, por exercício, enunciado, hipóteses, diagnóstico e, imagem por imagem, cores, conteúdo digerido, versões, acertos, gaps e destinos possíveis. Acompanhe o desfecho de cada azul e os pedidos verdes.
+A etapa termina quando a tentativa inteira, no escopo combinado, é **boa o suficiente**. Emita um parecer positivo com a evidência de fechamento e proponha consolidar. Se houver apêndice ou outra parte ainda inadequada, só separe sua revisão da prova principal **com acordo explícito do usuário**. Registre o escopo concluído e a pendência; não declare concluído o conjunto inteiro.
 
-Durante o debate, registre também cada ciclo: gap trabalhado, notas consultadas, orientação efetivamente dada, resposta do usuário, artefatos relidos e conclusão da revisão. Distinga o que veio do manuscrito, o que o usuário reformulou e o que o agente sugeriu. Estados úteis: **identificado**, **em debate**, **aguardando revisão do usuário**, **revisto com pendência** e **resolvido**, este último sempre com evidência. O mapa permite retomar o trabalho sem inventar uma história de aprendizado.
+## Cores e inserções de revisão
 
-## Ensinar, aguardar a revisão e reavaliar
+As cores são **famílias de tom**, não valores RGB exatos. Preto leve pode parecer cinza; azul pode puxar para anil. Se a leitura ou o papel de uma cor não contemplada forem incertos, esclareça a dúvida específica.
 
-**Havendo erros ou omissões, pare a consolidação e converse sobre o gap. Não apresente uma solução integral pronta para aprovação enquanto a tentativa ainda precisa ser aprimorada.**
+- **Preto — operacionalização:** contas, passos e demonstrações. A solução recebe a execução final adequada.
+- **Azul — reflexão:** raciocínio que organiza o caminho. Examine todo azul e debata o que precisar de desenvolvimento. Reflexões validadas entram na solução em `> [!note] <Título específico>`, próximas ao passo correspondente, com conceitos em **negrito**. Ideias inteiramente erradas ficam no Processo; conjecturas não se tornam resultados sem justificativa.
+- **Verde — metaconversa:** dúvidas e instruções dirigidas ao agente. Responda e aplique o que estiver acordado; não transcreva a metaconversa na solução.
+- **Vermelho — início de correção ou aprofundamento:** durante as revisões, uma frase vermelha identifica o erro ou gap a trabalhar. O desenvolvimento seguinte mantém os papéis do preto, azul e verde. O contexto determina seu fim, sem símbolo de encerramento obrigatório. A frase não é uma reflexão azul nem entra automaticamente na solução.
 
-1. **Delimite o bloqueio.** Diga o que já está correto e escolha o erro, omissão ou grupo dependente de gaps que está impedindo o próximo passo. Foque nele; não sobrecarregue o retorno com a solução completa, todos os extras e os arquivos finais.
-2. **Ensine com as notas.** Mostre qual definição, hipótese ou resultado decide o ponto e por que a passagem atual falha ou está incompleta. Use exemplos, contraexemplos e explicações proporcionais à dificuldade. Dê pistas progressivas e aprofunde a explicação quando necessário ou solicitado; a orientação deve permitir que o usuário refaça o argumento.
-3. **Devolva a elaboração ao usuário.** Indique concretamente o trecho a refazer, justificar ou acrescentar e aguarde sua revisão. Ele pode reformular o argumento na conversa ou alterar os manuscritos. Um "OK" à explicação não é, por si só, uma nova resolução nem evidência de que o gap foi superado.
-4. **Quando ele avisar que alterou, releia.** Confira os arquivos ou argumentos efetivamente revistos, compare com o diagnóstico e avalie a nova versão com o mesmo referencial teórico. Não suponha que a alteração resolveu o problema. Preserve os acertos e procure tanto o gap anterior quanto eventuais problemas introduzidos na revisão.
-5. **Repita com foco.** Se ainda houver pendência, explique precisamente o que persiste e retome o ciclo. Se o ponto foi resolvido, diga qual argumento o resolveu e avance ao próximo gap. Registre as intervenções e os resultados no mapa, sem atribuir ao usuário um passo que só o agente escreveu.
-6. **Reavalie a resposta inteira.** Só passe à consolidação quando a versão mais recente constituir uma resposta adequada: completa para a tese, correta e fundamentada nas notas. Não confunda melhora parcial, aprovação de uma dica ou cansaço com fechamento. Se houver interrupção ou adiamento, registre a pendência e não declare o exercício concluído.
+Lapsos pontuais podem ser corrigidos diretamente, sem abertura vermelha. Retrabalhos e aprofundamentos usam essa abertura e podem ser inseridos como `x.1`, `x.2` entre `x` e a próxima parte. Leia na ordem `6`, `6.1`, `6.2`, `6.10`, `7`; relacione cada inserção ao trecho que ela corrige. Não suponha que toda a parte anterior foi substituída: confira seu alcance pelo conteúdo. A ferramenta de cores localiza tinta; o significado e a validade dependem da leitura.
 
-O foco é vencer o gap real, não conduzir o usuário a reproduzir uma redação do agente. Uma prova válida por outra rota é avaliada pela teoria e discutida conforme a intenção do usuário.
+## Etapa 3 — Consolidar a solução
 
-## Preservar o papel das cores
+Após o parecer positivo, apresente o texto exato da solução em bloco de código Markdown, preservando a rota, as reflexões validadas e o nível de detalhe necessário para recuperar o raciocínio. Leia o contrato em [Arquivos e memória de trabalho](references/arquivos.md).
 
-As cores são **famílias de tom**, como em consolidar-manuscritos. Preto com pouca pressão pode parecer cinza; azul pode puxar para anil. Na dúvida, use `tinta.py`. Se a ambiguidade mudar o tratamento, ou surgir uma família diferente, pergunte ao usuário.
+Aguarde aprovação para gravar **a solução**. Verifique-a com `verificar.py --etapa solucao <arquivo>`: a ausência temporária do Processo é permitida nessa etapa. Se surgir novo gap matemático, retome a orientação antes de consolidar. Gravada e conferida a solução, informe a conclusão e proponha passar ao Processo; a aprovação desta entrega não autoriza as próximas.
 
-- **Preto — operacionalização.** Contas, passagens e demonstração. Se houver gap, ele entra no ciclo de revisão. A solução recebe a execução adequada obtida ao fim do processo, sem narrar o erro anterior.
-- **Azul — reflexão.** Pensamentos e organização do caminho. **Todo azul é examinado e debatido.** Se precisar de correção ou desenvolvimento, trabalhe esse gap com o usuário. Na solução, a reflexão validada entra em `> [!note] <Título>`, perto do passo que organiza, com título específico, conceitos em **negrito** e sem wikilinks. Separe ideias distintas. Um azul inteiramente errado fica fora da solução e tem seu tratamento registrado no processo. Conjecturas, analogias e perguntas não se tornam resultados estabelecidos sem justificativa.
-- **Verde — metaconversa.** Pedidos de ajuda, dúvidas e instruções para o agente. Responda no debate e aplique as orientações. Não transcreva o verde; extras e insights que ele originar entram com o acordo do usuário.
+## Etapa 4 — Consolidar o Processo de resolução
 
-Uma reflexão corrigida e validada com o usuário continua sendo sua reflexão. O processo registra com fidelidade a ajuda recebida.
+Somente depois da solução consolidada, prepare o documento técnico a partir dos problemas e desenvolvimentos efetivamente observados. Use **Abordagem inicial**, **Problemas e correções** e **Síntese técnica**. Cada tema recupera problema, fundamento, desenvolvimento da correção e justificativa final, incluindo os lapsos de atenção relevantes.
 
-## Apresentar o resultado adequado e consolidar
+A conversa é evidência para a seleção do conteúdo. O documento contém matemática e técnica de resolução: não narra quem pediu ou explicou algo, ações de ferramentas, divergências de leitura ou a cronologia do chat. Detalhes de procedência permanecem no mapa; não invente correções ou resultados ausentes.
 
-**A aprovação para gravar os arquivos vem depois do ciclo de aprimoramento.** Ela não substitui a revisão da resposta. Se a tentativa já estiver adequada na primeira leitura, siga diretamente para esta apresentação.
+Apresente o texto para revisão e aprovação própria antes de gravar. Confira solução e Processo com a validação completa, que exige o par. Informe o fechamento e proponha a avaliação de contribuições ao acervo.
 
-Apresente na conversa:
+## Etapa 5 — Avaliar o retorno ao acervo
 
-1. A avaliação da versão final, os gaps resolvidos e as evidências que permitiram fechá-los.
-2. As respostas aos verdes e o desfecho das reflexões azuis.
-3. O rascunho exato da solução em bloco de código Markdown, fiel à resposta adequada do usuário.
-4. O resumo do processo de resolução, baseado nas intervenções e revisões efetivamente observadas na conversa.
-5. Os extras e insights propostos, com texto, destino e decisões pendentes, cada uma com recomendação.
+Procure propriedades, conexões ou recursos de leitura que tenham sido justificados na resolução. Confira as notas e os extras existentes para evitar duplicações. Distinga insight teórico, conexão já coberta pelo acervo e fundamento ainda não compilado; use os destinos de [Arquivos e memória de trabalho](references/arquivos.md).
 
-Aguarde o OK do usuário antes de gravar as notas finais. Se a revisão do rascunho revelar um novo gap matemático, volte ao ciclo de ensino e revisão. As decisões reservadas ao usuário esperam sua escolha; as demais seguem a recomendação apresentada, informada no relatório final. Não classifique como compilado o que ficou adiado.
+Para cada proposta, apresente o texto exato, a justificativa, o destino e a recomendação. **Aguarde aprovação específica antes de inserir.** Se nada novo merecer registro, explique essa conclusão e encerre a etapa. Um exemplo correto é a união como **menor conjunto que contém ambos** e a interseção como **maior conjunto contido em ambos**; confira se a nota já desenvolve o resultado.
 
-## Arquivos produzidos
+## Aprovações e retomadas
 
-Leia [Arquivos e registro do processo](references/arquivos.md) antes de consolidar.
+Na conclusão de cada etapa, apresente o que ficou estabelecido, as pendências e o próximo passo para aprovação. Aguarde a autorização antes de iniciar a etapa seguinte. Uma resposta que já autorize explicitamente esse próximo passo vale como aprovação; não pergunte novamente. Aprovações não se estendem automaticamente a entregas posteriores. Durante um ciclo autorizado, a nova tentativa permite sua releitura e feedback, sem uma pergunta de permissão a cada passagem.
 
-- `<Livro> vol. N (<Autor>)/Capítulo N/Exercício N.M.md` — **só a resolução final:** enunciado formalizado, reflexões validadas, estratégia e demonstração, sem histórico de versões, debate, páginas ou agente.
-- `<Livro> vol. N (<Autor>)/Capítulo N/Exercício N.M - Processo de resolução.md` — **o percurso de aprimoramento:** ponto de partida, gaps, fundamentos consultados, explicações, pistas, conselhos e indicações dados, revisões do usuário e evidência de fechamento. Organize por gap, preservando a sequência dos ciclos em cada um; não é um catálogo de erros remanescentes.
-- `<Livro> vol. N (<Autor>)/Extras no acervo.md` e `Extras fora do acervo.md` — conexões com o que já está e com o que ainda não está compilado, por capítulo.
-- **No acervo:** callouts `> [!insight] <Título>`, perto do conteúdo pertinente, com as letras da nota que os recebe, conceitos em **negrito**, sem wikilinks e só por inserção. Use o snippet `insight.css` existente. `[!note]` é reservado à reflexão azul.
+A aprovação para consolidar não substitui o critério de qualidade. Preserve os limites autorizados, inclusive quando o trabalho for retomado. Registre separadamente o estado da solução, do Processo e das contribuições ao acervo.
 
-O novo registro substitui `- Erros.md` nas próximas consolidações. Arquivos antigos permanecem históricos até uma migração solicitada; não os renomeie nem reconstrua ciclos sem a conversa que lhes daria base. O verificador mantém compatibilidade com o formato anterior.
+## Escrita e ferramentas
 
-## Escrita matemática
+Siga os critérios de escrita e as convenções matemáticas de [consolidar-manuscritos](../../../../Notas-de-Estudo/.agents/skills/consolidar-manuscritos/SKILL.md). Em particular: $\subseteq$ é a inclusão ampla e $\subset$ a estrita; adapte o amplo do Elon. Use $\mathbb N=\{0,1,2,\ldots\}$ e $\mathbb N^*=\{1,2,3,\ldots\}$, explicitando a adaptação do livro. Preserve quantificadores, hipóteses e alcance lógico.
 
-Siga as seções "Critérios de escrita matemática" e "Convenções matemáticas das notas" de [consolidar-manuscritos](../../../../Notas-de-Estudo/.agents/skills/consolidar-manuscritos/SKILL.md), fonte única das convenções dos dois repositórios. Em particular:
-
-- $\subseteq$ é a inclusão ampla; $\subset$ é a estrita. Adapte o $\subset$ amplo do Elon para $\subseteq$.
-- $\mathbb N=\{0,1,2,\ldots\}$ e $\mathbb N^*=\{1,2,3,\ldots\}$; o $\mathbb N$ do Elon corresponde a $\mathbb N^*$.
-- Explicite quantificadores e preserve hipóteses, objetos e alcance lógico. Nomeie os fundamentos usados, com detalhe suficiente para recuperar o raciocínio.
-
-Formalize o enunciado na abertura, respeitando a organização já aprovada para o exercício. Convenções do livro que o usuário discutiu podem aparecer como reflexões validadas. Novas equivalências de notação vão como proposta para Notações do bloco.
-
-## Ferramentas
-
-O código auxiliar fica em `ferramentas/`. **Não escreva scripts avulsos** para ler cores, conferir delimitadores ou procurar wikilinks: use as ferramentas. Se faltar uma capacidade recorrente, proponha estendê-las, com teste.
-
-Preparação, uma vez por máquina, a partir da raiz do repositório (`.venv` é ignorada pelo git):
+Use os auxiliares existentes; não crie scripts avulsos para cores ou lint. Preparação, quando necessária:
 
 ```powershell
 py -V:3.13 -m venv .venv
 .venv\Scripts\python -m pip install -r .agents/skills/consolidar-exercicio/ferramentas/requirements.txt
 ```
 
-| Comando | Para quê |
+Execute com `.venv\Scripts\python -X utf8 .agents/skills/consolidar-exercicio/ferramentas/<script> …`:
+
+| Comando | Uso |
 |---|---|
-| `tinta.py inventario <pasta>` | Famílias de cor e possíveis versões; registrar no mapa. |
-| `tinta.py faixas <imagem…>` | Localizar cores, notas de margem e linhas mistas. |
-| `tinta.py camadas <imagem…>` | Separar cores em imagens de `<pasta>/.camadas/`. |
-| `verificar.py [caminhos…]` | Lint das soluções, registros do processo, extras e notas que receberam insight; aceita registros históricos de erros. |
+| `tinta.py inventario <pasta>` | Cores e possíveis versões, na ordem de leitura das inserções. |
+| `tinta.py faixas <imagem…>` | Cores e posições por faixa. |
+| `tinta.py camadas <imagem…>` | Imagem por família, incluindo vermelho. |
+| `verificar.py --etapa solucao <arquivo>` | Conferência intermediária; só dispensa o Processo ausente. |
+| `verificar.py [caminhos…]` | Conferência completa; exige os pares e aceita registros históricos. |
 
-Execute com `.venv\Scripts\python -X utf8 .agents/skills/consolidar-exercicio/ferramentas/<script> …`. Testes: `.venv\Scripts\python -m unittest discover -s .agents/skills/consolidar-exercicio/ferramentas/testes`.
+O lint não comprova a correção matemática, a qualidade do feedback nem a aprovação. Faça também a conferência com a teoria, a tentativa e o escopo acordado. Audite os destinos de cada azul, verde e desenvolvimento iniciado em vermelho. Testes dos auxiliares: `.venv\Scripts\python -m unittest discover -s .agents/skills/consolidar-exercicio/ferramentas/testes`.
 
-## Verificar e encerrar
-
-1. Rode `verificar.py` nos arquivos criados ou alterados, incluindo notas que receberam insight, e corrija os erros. Todo gap trabalhado deve ter fundamento identificado; se o acervo não o cobre, registre explicitamente. O lint não comprova correção matemática nem aprendizado.
-2. Confira a resposta final com as notas e audite o mapa nos dois sentidos: cada contribuição tem desfecho, cada azul foi tratado, cada verde foi respondido e tudo que foi aprovado está em arquivo identificado. Todo gap da resolução precisa estar resolvido, com evidência da revisão do usuário. Pendências externas à resposta, adiadas por acordo, ficam explícitas.
-3. Confira o processo de resolução com a própria conversa: todas as ajudas relevantes, revisões e desfechos estão representados, sem inventar intervenções, autonomia ou domínio demonstrado. A solução contém só o resultado final adequado.
-4. Atualize o mapa e informe o que foi consolidado, as decisões tomadas por recomendação e o que ficou pendente.
-5. Commit só quando solicitado: um repositório por vez, unidades coerentes, mensagens em inglês e direto na `main`, conforme o histórico. Solucionários e Notas-de-Estudo em commits separados; sem push sem pedido.
+Commit somente quando solicitado, um repositório por vez, com mensagens em inglês e direto na `main`, conforme o histórico; sem push sem pedido. Preserve arquivos históricos de erros e a configuração de outras skills até uma revisão expressamente solicitada.

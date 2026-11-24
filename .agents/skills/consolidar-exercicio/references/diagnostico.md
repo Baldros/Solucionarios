@@ -1,61 +1,67 @@
-# Diagnóstico e revisão dos gaps
+# Diagnóstico e revisão
 
-Use estas categorias para entender a tentativa e escolher o foco de ensino. O documento final do processo se organiza pelo percurso de cada gap, e não por uma lista de erros que continuariam na resolução.
+Leia a tentativa pelo conteúdo matemático e pela intenção sustentada pelo contexto. A classificação ajuda a indicar a correção adequada; não mede a capacidade do estudante nem define seções obrigatórias do documento final.
 
-## Ler o enunciado antes de julgar
+## Antes de julgar a passagem
 
-- **Convenções.** Confira o sentido dos símbolos no livro e em Notações do bloco. O $\subset$ do Elon é a inclusão ampla; a adaptação está em Notações de Teoria dos Conjuntos.
-- **Consistência.** Teste as hipóteses sob as leituras possíveis. No Exercício 1.1, ler a inclusão como estrita levaria, com $Y=X$, a $X\subset X$.
-- **Quantificadores.** Identifique os implícitos: "se $Y$ contém $A$ e $B$, então contém $X$" vale para todo conjunto $Y$ com a condição indicada.
-- **Hipóteses e tese.** Separe o que já pode ser usado do que precisa ser demonstrado. Interprete as condições juntas, sem antecipar a prova que o usuário deverá elaborar.
+Confira enunciado, hipóteses, tese, convenções e versões. O símbolo amplo do Elon é adaptado para $\subseteq$; não atribua uma inclusão estrita apenas pela forma do traço. Localize no material teórico a definição ou resultado que decide o ponto.
 
-## Mapear versões e acertos
+Distinga o que está efetivamente escrito, o que o contexto permite interpretar e o que ainda depende de esclarecimento. Se a dúvida de leitura mudar a avaliação, exponha as leituras possíveis e esclareça antes de classificar. Uma inserção de revisão pode corrigir um trecho específico sem substituir todos os rascunhos anteriores.
 
-Reconheça páginas anteriores, continuações, reescritas e desvios. Um problema que o usuário já corrigiu sozinho em outra versão não é um gap atual: registre a autocorreção, sem atribuí-la à orientação do agente.
+## Três tipos de problema
 
-Identifique a rota principal e os ingredientes válidos já presentes. Estratégias corretas, dúvidas pertinentes, contradições percebidas e autoavaliações exatas são acertos. Uma dúvida pode ser correta mesmo antes de o usuário saber resolvê-la.
+| Tipo | Critério | Impacto e tratamento |
+|---|---|---|
+| Escrita ou atenção | A fórmula escrita diverge do raciocínio demonstrado no contexto. | Localize o lapso e indique o ajuste pontual. Diga se o argumento, interpretado corretamente, continua válido. |
+| Conceitual | O próprio raciocínio depende de definição, hipótese, objeto ou inferência incorreta. | Explique qual conclusão falha, ensine seu fundamento e indique o retrabalho necessário. |
+| Omissão ou gap | Uma conclusão pode ser verdadeira, mas falta um passo, hipótese, justificativa ou explicitação exigida pela teoria. | Mostre exatamente a dependência ausente e o que precisa ser desenvolvido para fechar o argumento. |
 
-## Distinguir os tipos de gap
+O símbolo isolado não decide o tipo. Escrever $\lor$ onde deveria haver $\land$ pode ser um lapso quando o raciocínio seleciona corretamente os elementos comuns; se a inferência usa a disjunção, há um erro conceitual. Quantificadores errados também exigem esse exame do contexto.
 
-### Raciocínio
+Os tipos podem coexistir. Corrigir uma fórmula pode revelar que a demonstração continua incompleta. Não apresente uma troca simbólica como suficiente para fechar um gap independente; também não invente um gap quando a definição ou um passo já presente o resolveu.
 
-Afirmações falsas, inferências inválidas, circularidade, hipóteses usadas indevidamente e objetos confundidos. Exemplos:
+## Feedback preciso e proporcional
 
-- Afirmar que existe elemento em $A\cap B$ sem hipótese de interseção não vazia.
-- Trocar $\forall$ por $\exists$, ou "e" por "ou", alterando a afirmação.
-- Concluir uma igualdade a partir de uma única inclusão ou repetir a mesma inclusão como se fosse a recíproca.
-- Tratar "não implica $P$" como "implica $\neg P$".
-- Manipular operações sem uma propriedade que sustente a passagem.
+Cada apontamento deve permitir recuperar, sem impor um formulário rígido:
 
-Verifique o contexto antes de atribuir o erro: uma notação ambígua pede confirmação da leitura, e uma afirmação válida sob as hipóteses pode estar apenas sem justificativa.
+- o local e a afirmação examinada, transcrita ou descrita fielmente;
+- o tipo de problema, a evidência e eventual incerteza;
+- o fundamento nas notas e o impacto exato no argumento;
+- a parte válida que permanece e a alteração necessária;
+- o próximo trabalho: correção pontual ou desenvolvimento a refazer.
 
-### Escrita
+Comece pelo bloqueio de que os próximos passos dependem. Explique com detalhe proporcional à dificuldade, usando pistas progressivas, exemplos e contraexemplos. Um contraexemplo ao enunciado inteiro precisa satisfazer suas hipóteses; um exemplo que refuta apenas uma passagem isolada deve ser apresentado com esse limite.
 
-Notação mal formada, proposição tratada como conjunto, relação de pertinência trocada por inclusão, variável sem introdução, quantificação defeituosa ou parênteses necessários ausentes. Decida se é um lapso ou um problema conceitual pelo argumento inteiro; não reduza trocas sistemáticas a grafia.
+Para retrabalho ou aprofundamento, indique a abertura vermelha e o trecho a desenvolver, preservando o restante válido. Se a concepção inteira for inviável, explique por que a correção local não basta e proponha seu descarte ou reformulação, com os elementos aproveitáveis. A nova elaboração cabe ao usuário.
 
-### Omissão ou incompletude
+## Exemplo: lapso e gap na dupla inclusão
 
-Parte da prova ausente, passo verdadeiro sem argumento, quantificador decisivo implícito, hipótese não utilizada ou método sem fundamento explicitado. No Exercício 1.1, a segunda inclusão era o gap decisivo; a definição de inclusão e a leitura universal da hipótese indicavam o ponto a trabalhar.
+As expressões
 
-## Trabalhar o gap como professor
+$$
+X\subseteq A\cap B
+\qquad\text{e}\qquad
+A\cap B\supseteq X
+$$
 
-1. **Escolha o bloqueio atual.** Priorize os fundamentos de que os próximos passos dependem. Um retorno pode apontar o panorama, mas deve trabalhar um foco manejável.
-2. **Localize a teoria.** Consulte a nota e seu contexto; diga qual definição ou resultado sustenta o diagnóstico. Mostre as hipóteses necessárias, não apenas o nome do teorema.
-3. **Explique a diferença concreta.** Compare a passagem da tentativa com o que a teoria permite. Quando houver uma afirmação falsa, use um contraexemplo que realmente respeite as hipóteses relevantes. Distinga um contraexemplo à passagem isolada de um contraexemplo ao enunciado completo.
-4. **Oriente a reconstrução.** Dê uma pista, um exemplo auxiliar, uma pergunta dirigida ou uma explicação mais desenvolvida conforme a dificuldade e o que o usuário pedir. Preserve sua rota e indique o trecho a refazer. Não entregue por padrão uma resolução integral para ele apenas aprovar.
-5. **Aguarde e releia.** Quando o usuário responder ou avisar que mudou os arquivos, confira a nova tentativa. Avalie o argumento produzido, não só a intenção de corrigir.
-6. **Feche com evidência ou continue.** Diga exatamente o que passou a estar justificado e o que ainda falta. Repetir a sugestão do agente sem o argumento necessário não comprova fechamento. Uma nova versão correta, com os fundamentos pertinentes, permite avançar.
+dizem a mesma coisa. A nota Subconjunto permite conferir isso pelos elementos: ambas começam com um elemento de $X$ e concluem sua pertinência à interseção.
 
-Uma escolha válida diferente da usual não é um gap. Se o material teórico for insuficiente ou contraditório para decidir o ponto, exponha a dependência e discuta como estudá-la, em vez de fingir que o referencial já a resolve.
+Se o contexto ou o esclarecimento da intenção mostra que a segunda expressão deveria ser $A\cap B\subseteq X$, há um **lapso de escrita** a corrigir. Isso não prova que a inclusão pretendida foi demonstrada. Se ainda não há argumento para ela, existe também uma **omissão**. Pela antissimetria, desenvolvida nas notas Subconjunto e Axioma da Extensão, a igualdade depende das duas inclusões.
 
-## Registrar o que realmente ocorreu
+O feedback deve separar os efeitos: a troca de símbolo corrige o registro da intenção; a justificativa da inclusão contrária completa a demonstração. Se essa justificativa já estiver em outra parte válida da tentativa, basta relacioná-la ao alvo e corrigir a escrita. Se o raciocínio realmente tratar uma inclusão repetida como suficiente para a igualdade, há um **erro conceitual**, que não pode ser reduzido à grafia.
 
-No mapa, registre cada orientação relevante enquanto a conversa acontece, para depois compor o processo de resolução. Para cada gap, preserve:
+Já o par $X\subseteq A\cap B$ e $A\cap B\subseteq X$ expressa corretamente os dois sentidos e não é redundante.
 
-- o ponto inicial e a dificuldade efetivamente observada;
-- a nota que fundamentou o trabalho, ou a ausência identificada no acervo;
-- as explicações, pistas, exemplos, contraexemplos, conselhos ou indicações dadas;
-- as revisões do usuário e a reavaliação de cada uma;
-- o desfecho e o argumento concreto que o sustentou.
+## Reavaliar sem reabrir o que foi resolvido
 
-Não reconstrua uma troca que não aconteceu. Se a história disponível só mostra uma solução proposta pelo agente, diga isso; não a transforme em revisão independente do usuário. Quando faltarem mensagens para recuperar uma intervenção, registre a limitação ou peça o contexto necessário.
+Aguarde a reformulação e releia o argumento ou os arquivos efetivamente alterados. Confira as condições da passagem, a correção anterior e eventuais novos problemas. Diga o que passou a estar justificado, identificando seu fundamento concreto.
+
+Por exemplo, dizer que $Y$ possui somente elementos de $A\cap B$ garante $Y\subseteq A\cap B$. Definir $Y=\{y:y\in A\land y\in B\}$ seleciona exatamente a interseção e já garante também $A\cap B\subseteq Y$. Não mantenha esse segundo ponto aberto apenas porque uma frase explicativa mais fraca permaneceu ao lado da definição correta. Fundamentação: notas Operações de Conjuntos e Subconjunto.
+
+Um OK à explicação ou um aviso de correção não substitui a revisão da nova tentativa. Tampouco se deve exigir uma redação particular se outra formulação válida fornece a justificativa necessária. O fechamento é matemático e fundamentado, não a reprodução de uma dica.
+
+## Evidências e documento final
+
+Na memória de trabalho, conserve a localização, o diagnóstico, as notas consultadas, as orientações e revisões observadas, o argumento de fechamento e as aprovações. Não invente uma reformulação ou uma compreensão autônoma não demonstrada. Esse controle de procedência serve à continuidade e à escolha fiel do conteúdo.
+
+No Processo de resolução, transforme esse material em exposição técnica: qual era o problema, que fundamento o decide, como a correção se desenvolve e por que o resultado é adequado. Exemplos e pistas que esclarecem a matemática podem permanecer; ações dos participantes, ferramentas, pedidos e cronologia do chat ficam fora. Veja o contrato em [Arquivos e memória de trabalho](arquivos.md).

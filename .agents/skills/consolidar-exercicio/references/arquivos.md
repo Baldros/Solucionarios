@@ -1,99 +1,90 @@
-# Arquivos e registro do processo
+# Arquivos e memória de trabalho
 
-A solução e os extras já existentes do Exercício 1.1 orientam a continuidade da exposição. Seu arquivo `- Erros.md` pertence ao fluxo anterior: não é o modelo do novo documento de processo. Não migre arquivos históricos sem solicitação nem invente ciclos de revisão ausentes da conversa.
+A solução, o Processo e as contribuições ao acervo são entregas separadas, produzidas nessa ordem e com aprovações próprias. A solução anterior do livro orienta notação e nível de exposição. Registros antigos de erros e Processos narrativos permanecem históricos, salvo revisão expressamente solicitada.
 
-## Organização
+## Organização e estados
 
 ```text
 <Livro> vol. N (<Autor>)/
 ├── Capítulo N/
-│   ├── Exercício N.M.md                         ← resolução final adequada
-│   └── Exercício N.M - Processo de resolução.md ← percurso de aprimoramento
+│   ├── Exercício N.M.md
+│   └── Exercício N.M - Processo de resolução.md
 ├── Extras no acervo.md
 └── Extras fora do acervo.md
 ```
 
-A numeração é a do livro: Exercício 1.1 é o primeiro exercício do capítulo 1. As pastas de imagens mantêm os nomes dados pelo usuário. Os novos exercícios produzem o registro de processo em lugar de `- Erros.md`; o verificador ainda aceita os pares históricos de solução e erros.
+A numeração é a do livro. As pastas de imagens mantêm seus nomes originais. Não crie um novo arquivo de erros: o Processo técnico o substitui para novas consolidações. O verificador continua aceitando os pares e estruturas históricos.
+
+A memória de trabalho deve identificar separadamente os estados da solução, do Processo e das contribuições ao acervo: em elaboração, apresentado, aprovado, gravado e verificado, além de pendências ou adiamentos explícitos. Uma etapa não é concluída apenas porque a anterior foi aprovada.
 
 ## A solução
 
-O nome do arquivo é o título. A abertura contém o enunciado formalizado e pode ser `## Enunciado` ou `## Concepção`, conforme a organização aprovada e o modelo atual do exercício.
+O nome do arquivo é o título. Abra com `## Enunciado` ou `## Concepção`, seguindo a organização aprovada e a continuidade do livro. Formalize objetos, hipóteses, tese e quantificadores; preserve a numeração das propriedades quando houver.
 
-1. **Enunciado e concepção.** Objetos, hipóteses e tese com quantificadores explícitos e convenções do vault. Preserve a numeração das hipóteses do livro, quando houver. Reflexões validadas sobre a leitura ficam perto do enunciado.
-2. **Elaboração.** Estratégia e reflexões que organizam a rota, quando necessárias. Use `[!note]` para os azuis, título específico, conceitos em negrito e nenhum wikilink.
-3. **Demonstração ou resolução.** A resposta adequada construída pelo usuário ao longo das revisões, organizada sem perda de passos, fundamentos ou reflexões aproveitáveis. Nomeie cada definição ou resultado que fundamenta um passo. Demonstrações terminam com $\blacksquare$.
+Conserve a estratégia, os passos e as reflexões validadas, com detalhe suficiente para recuperar o raciocínio. Use `[!note]` com título específico para as reflexões azuis, junto ao passo que organizam, e destaque os conceitos em **negrito**. Nomeie os fundamentos matemáticos usados. Demonstrações terminam com $\blacksquare$.
 
-Não entram histórico das tentativas, intervenções do agente, referências às páginas, relato dos erros, desvios abandonados ou rotas alternativas. Não complete aqui um gap matemático que o ciclo ainda não resolveu; volte ao debate antes de consolidar. Ajustes de apresentação não devem mudar o significado validado.
+A solução contém apenas a resposta final adequada. Não recebe relato de erros, versões, debate, participantes ou localização dos manuscritos. Um desenvolvimento iniciado em vermelho contribui com sua execução corrigida; sua frase de abertura não vira uma reflexão da solução. Desvios abandonados pertencem ao Processo, quando ajudam a entender a correção; rotas alternativas podem ser propostas posteriormente como extras.
 
-## O processo de resolução
+Após aprovar e gravar a solução, rode `verificar.py --etapa solucao <arquivo>`. A opção permite apenas a ausência temporária do Processo; mantém as demais regras. Não crie um Processo vazio para satisfazer o verificador. Depois da aprovação própria do Processo, faça a verificação completa do par, sem essa dispensa.
 
-O arquivo conta como a resposta foi aprimorada, **com base na conversa e nas revisões observadas**. Registra a ajuda recebida e o que o usuário fez com ela. Não apresenta os problemas iniciais como erros ainda existentes na resposta final.
+## O Processo de resolução
 
-Abra com um parágrafo que explique a finalidade e use estas seções, nesta ordem:
+O documento mapeia os problemas efetivamente identificados e o desenvolvimento matemático das correções. A conversa e as tentativas são fontes de evidência; o texto final é orientado ao conteúdo estudado.
 
-- `## Ponto de partida` — o que a tentativa inicial já conseguia, seus acertos, a rota escolhida e os gaps que impediam uma resposta adequada.
-- `## Ciclos de revisão` — uma entrada `### <título do gap>` por assunto. Dentro de cada entrada, acompanhe a sequência de orientação, revisão do usuário e releitura, inclusive quando foram necessárias várias rodadas.
-- `## Síntese do aprendizado` — o que a versão final passou a justificar e quais fundamentos sustentam esse avanço. Distingua o que foi demonstrado nas revisões do que apenas foi discutido ou indicado para estudo posterior. Se não houve gaps nem intervenções, diga isso; não invente um percurso.
+Use estas seções, nesta ordem:
 
-Cada entrada deve deixar recuperáveis o gap, a teoria, a ajuda efetivamente dada, a ação do usuário e a evidência de fechamento. Parágrafos corridos ou rodadas numeradas dentro da entrada são adequados; não é preciso transcrever a conversa. Nomeie as notas teóricas em texto simples. Se o acervo não cobre o fundamento, registre isso e o encaminhamento combinado.
+- `## Abordagem inicial`: concepção, estratégia, argumentos válidos e dependências ainda abertas na tentativa de partida.
+- `## Problemas e correções`: uma entrada `###` por assunto, com o problema, seu tipo, o fundamento teórico, o desenvolvimento corretivo e a justificativa final. Se houver várias revisões relevantes, preserve a evolução das ideias sem narrar as interações.
+- `## Síntese técnica`: o que a resposta passou a justificar, os fundamentos que a sustentam e as pendências externas ao escopo concluído.
 
-Modelo de uma entrada, a preencher somente com fatos observados:
+Registre também os lapsos de atenção trabalhados. Diferencie uma correção de escrita de uma mudança conceitual ou do preenchimento de uma omissão. A entrada pode reunir camadas dependentes, desde que explique separadamente seus efeitos. Nomeie as notas teóricas em texto simples; se o acervo não cobrir um fundamento, explicite a ausência e o encaminhamento pertinente.
 
-```markdown
-### Distinguir uma inclusão de sua recíproca
-
-A tentativa apresentava $X\subseteq Z$ e $Z\supseteq X$ como as duas partes da igualdade. A orientação mostrou, com a definição de inclusão da nota Subconjunto, que eram duas escritas da mesma afirmação, e retomou a antissimetria. Foi pedido ao usuário que reformulasse o sentido ainda ausente.
-
-Na revisão seguinte, o usuário [descrever o argumento efetivamente enviado]. A releitura [registrar o resultado observado]. O gap foi encerrado quando [identificar a justificativa concreta na revisão adequada].
-```
-
-O modelo não afirma que esse ciclo aconteceu em um exercício real. Substitua os trechos entre colchetes por evidência da conversa; não os deixe no documento final.
-
-Escreva por conteúdo, sem páginas ou nomes de imagens. Erros de raciocínio, escrita e omissões podem ser identificados no relato de cada gap, mas não constituem seções separadas obrigatórias. Registre as ajudas relevantes mesmo quando foram explicações amplas; não atribua independência ao usuário se o agente forneceu o passo. A ausência de erro na versão final não apaga o caminho percorrido.
-
-## Os extras
-
-- `Extras no acervo.md`: conexões, perspectivas e outras formas de resolver com conteúdo já compilado no Notas-de-Estudo.
-- `Extras fora do acervo.md`: pontes com fundamentos ainda não compilados, generalizações e pistas para estudo, identificadas como "a conferir" quando não verificadas.
-
-Os arquivos abrem com sua finalidade e usam `## Capítulo N`. Cada entrada `### <título>` explica a conexão, identifica o exercício de origem e cita as notas pelo nome. Acrescente à seção do capítulo existente. Não duplique conexões anteriores nem antecipe extras durante o trabalho de um gap quando isso desviar o foco.
-
-## Os insights no acervo
-
-Um insight registra o que o exercício esclareceu sobre a teoria: uma propriedade, teste de leitura, identidade ou recurso útil. Deve estar justificado pelo argumento validado ou no próprio texto.
+Exemplo de exposição técnica:
 
 ```markdown
-> [!insight] A união é o menor conjunto que contém os dois
-> Um conjunto $Y$ contém $B$ e $C$ exatamente quando contém a **união**: …
+### Separar a inclusão repetida da justificativa ausente
+
+Havia duas escritas de uma única inclusão: $X\subseteq Z$ e $Z\supseteq X$. O lapso de escrita era a direção da segunda expressão, cujo alvo era $Z\subseteq X$. Mesmo corrigido o símbolo, faltava justificar essa inclusão.
+
+Pela nota Subconjunto, $Z\subseteq X$ exige começar com um elemento arbitrário de $Z$ e demonstrar sua pertinência a $X$. No caso $Z=A\cap B$, definir $Y$ por todos os elementos comuns torna $Y=Z$. Verificadas as condições da hipótese universal, obtém-se $Y\subseteq X$, logo $Z\subseteq X$. A antissimetria então fornece $X=Z$.
 ```
 
-Insira perto do conteúdo pertinente, usando as letras da nota que recebe o insight, sem alterar suas linhas existentes. Título específico, conceitos em negrito, nenhum wikilink nem referência ao exercício ou ao agente. Exemplos existentes ficam em Operações de Conjuntos e Subconjunto, no acervo. `[!note]` continua reservado às reflexões azuis.
+Preserve explicações, distinções, exemplos e contraexemplos que contribuam para o estudo. Retire fórmulas como “o usuário pediu”, “o agente explicou”, relatos de ferramentas, divergências de leitura, sequência de mensagens, autorizações e avaliações de autonomia ou domínio pessoal. Trocar esses sujeitos por voz passiva não torna um relato do chat técnico: o objeto de cada parágrafo deve ser o argumento matemático ou sua correção.
 
-## O mapa durante as revisões
+Não invente uma evolução ausente. Pontos apenas discutidos não viram correções concluídas; registre o alcance matemático efetivamente estabelecido. Quando não houver problemas, diga que a abordagem já atendia ao referencial, sem criar entradas artificiais. Apêndices adiados por acordo podem ser identificados brevemente como pendentes, sem desenvolver ou declarar encerrados seus gaps.
 
-O mapa `Images/<livro>/<Capitulo>/mapa-cobertura.md` é memória recuperável, ignorada pelo git e sem wikilinks. Mantenha a digestão de todas as imagens, cores, versões, acertos e destinos, além do histórico dos ciclos. Separe os acréscimos da conversa do conteúdo do manuscrito.
+Na consolidação, apresente o texto para revisão e aguarde aprovação própria antes de gravar. O formato histórico `Ponto de partida / Ciclos de revisão / Síntese do aprendizado` continua legível pelo verificador; novas produções usam o formato técnico acima.
 
-```markdown
-## Exercício N.M (pasta Q<n>)
+## Extras e insights: etapa posterior
 
-Enunciado: … Hipóteses: … Tese: …
-Estado: em debate | aguardando revisão do usuário | resposta adequada | aprovado | consolidado.
+Depois de consolidar solução e Processo, avalie o retorno ao material teórico. Confira o conteúdo existente antes de propor entradas e apresente cada texto com destino, fundamento e recomendação para aprovação específica.
 
-### Imagens e contribuições
-- Q<n>/1.png: conteúdo, cores, diagnóstico, versão e destino.
+- `Extras no acervo.md`: conexões e perspectivas que usam conteúdo já compilado.
+- `Extras fora do acervo.md`: fundamentos ainda não compilados, generalizações e pistas de estudo, marcados como “a conferir” quando não verificados.
+- Notas teóricas: insights justificados que acrescentem uma propriedade, conexão ou recurso útil ao estudo.
 
-### Gaps e ciclos
-- Gap: … Estado: identificado | em debate | aguardando revisão | revisto com pendência | resolvido.
-- Fundamento nas notas: …
-- Orientação efetivamente dada: …
-- Revisão do usuário e artefatos relidos: …
-- Resultado da releitura e evidência de fechamento, quando houver: …
+Os extras abrem com sua finalidade, usam `## Capítulo N` e entradas `###` por tema. Identifique o exercício de origem e cite as notas por nome. Acrescente à seção existente do capítulo e evite duplicações.
 
-### Destinos e pendências
-- Reflexões azuis: desfecho de cada uma.
-- Pedidos verdes: resposta e encaminhamento.
-- Arquivos finais: propostos | aprovados | consolidados e verificados.
-- Pontos adiados por acordo: …
-```
+Nas notas teóricas, insira `> [!insight] <Título específico>` perto do conteúdo pertinente, usando as letras da nota de destino, conceitos em **negrito**, sem wikilinks no callout nem referência ao exercício ou aos participantes. Preserve o conteúdo existente por inserção e use o snippet `insight.css` disponível. `[!note]` continua reservado à reflexão azul no fluxo dos exercícios.
 
-Antes de apresentar a consolidação, confira se os gaps da resolução foram resolvidos na versão mais recente. Antes de encerrar, confira se o processo final representa as intervenções relevantes e se cada contribuição tem desfecho. Um mapa detalhado ajuda a retomada, mas não substitui reler uma imagem alterada nem recuperar a conversa quando o registro não for suficiente.
+Exemplos de conteúdo a conferir antes de propor:
+
+- A união é o **menor conjunto que contém ambos**: $B\subseteq Y\land C\subseteq Y\iff B\cup C\subseteq Y$.
+- A interseção é o **maior conjunto contido em ambos**: $Y\subseteq B\land Y\subseteq C\iff Y\subseteq B\cap C$.
+
+O resultado, seus sentidos e o alcance das hipóteses precisam estar justificados. Se a nota já desenvolve o mesmo ponto, não crie outro callout equivalente. Nenhuma proposta é inserida automaticamente por ter surgido na resolução.
+
+## Memória de trabalho durante as revisões
+
+O mapa `Images/<livro>/<Capitulo>/mapa-cobertura.md` é memória recuperável, ignorada pelo git e sem wikilinks. Nele, a localização dos manuscritos e o histórico das intervenções são úteis para retomar o trabalho. Eles não pertencem ao Processo técnico.
+
+Registre por exercício:
+
+- Enunciado, hipóteses, tese e concepção.
+- Conteúdo de cada imagem, cores, versões e relação das inserções `x.1`, `x.2` com os trechos corrigidos. Diferencie acréscimo, substituição parcial e versão anterior, sem inferir isso apenas do nome.
+- Diagnóstico por problema: tipo, evidência, teoria, impacto, orientação efetivamente dada, reformulações e resultado da releitura.
+- Argumento que fecha cada ponto, ou pendência específica; não atribua uma elaboração autônoma se o passo só foi fornecido como orientação.
+- Destino de cada reflexão azul, resposta aos verdes e escopo dos desenvolvimentos iniciados em vermelho.
+- Aprovações, escopo consolidado, apêndices adiados por acordo e estado de cada entrega.
+
+Um mapa detalhado não substitui reler uma imagem alterada nem permite inventar intervenções. Antes de fechar uma etapa, confira os artefatos correspondentes, suas aprovações e a cobertura do escopo. Antes de gravar o Processo, selecione dessa memória apenas o conteúdo técnico que explica os problemas e suas correções.
