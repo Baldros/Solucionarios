@@ -22,10 +22,10 @@ Da solução (Exercício N.M.md):
 
 Do processo (Exercício N.M - Processo de resolução.md):
 
-    secoes        Ponto de partida, Ciclos de revisão e Síntese do aprendizado,
-                  nessa ordem
-    ponte         (aviso) gap em Ciclos de revisão sem nota teórica citada
-                  nem indicação de ausência de cobertura no acervo
+    secoes        Abordagem inicial, Problemas e correções e Síntese técnica,
+                  nessa ordem; aceita também o formato histórico do processo
+    ponte         (aviso) problema sem nota teórica citada nem indicação de
+                  ausência de cobertura no acervo
 
 Do arquivo histórico de erros (Exercício N.M - Erros.md):
 
@@ -41,13 +41,15 @@ Dos extras (Extras no acervo.md, Extras fora do acervo.md):
 
 Da pasta de capítulo:
 
-    par           toda solução tem seu processo (ou erros históricos), e todo
-                  registro tem sua solução
+    par           na etapa completa, toda solução tem seu processo (ou erros
+                  históricos); todo registro sempre exige sua solução
 
 Uso, a partir da raiz do repositório:
 
     .venv\\Scripts\\python .agents/skills/consolidar-exercicio/ferramentas/verificar.py [caminhos...]
 
+--etapa solucao permite a ausência temporária do processo, mantendo todas as
+outras regras. O padrão é --etapa completo e exige o par final.
 Sem caminhos, verifica os .md do repositório fora de pastas ocultas e de
 Images/, menos o README.md. Sai com código 1 se houver erro; avisos não mudam
 o código de saída.
@@ -62,7 +64,8 @@ from pathlib import Path
 
 SECOES_ERROS = ["Avaliação", "Erros de raciocínio", "Erros de escrita", "Incompletudes"]
 SECOES_COM_PONTE = {"Erros de raciocínio", "Incompletudes"}
-SECOES_PROCESSO = ["Ponto de partida", "Ciclos de revisão", "Síntese do aprendizado"]
+SECOES_PROCESSO = ["Abordagem inicial", "Problemas e correções", "Síntese técnica"]
+SECOES_PROCESSO_HISTORICO = ["Ponto de partida", "Ciclos de revisão", "Síntese do aprendizado"]
 TITULOS_GENERICOS = {
     "nota", "notas", "note", "observação", "observações", "obs", "insight", "reflexão", "reflexões",
 }
@@ -238,7 +241,10 @@ def checar_erros(caminho: Path, linhas: list[str]) -> list[Achado]:
 
 
 def checar_processo(caminho: Path, linhas: list[str]) -> list[Achado]:
-    return checar_registro(caminho, linhas, SECOES_PROCESSO, {"Ciclos de revisão"})
+    nomes = {linha[3:].strip() for linha in linhas if linha.startswith("## ")}
+    if nomes.intersection(SECOES_PROCESSO_HISTORICO) and not nomes.intersection(SECOES_PROCESSO):
+        return checar_registro(caminho, linhas, SECOES_PROCESSO_HISTORICO, {"Ciclos de revisão"})
+    return checar_registro(caminho, linhas, SECOES_PROCESSO, {"Problemas e correções"})
 
 
 def checar_extras(caminho: Path, linhas: list[str]) -> list[Achado]:
@@ -249,8 +255,10 @@ def checar_extras(caminho: Path, linhas: list[str]) -> list[Achado]:
     ]
 
 
-def checar_par(caminho: Path, tipo_arquivo: str) -> list[Achado]:
+def checar_par(caminho: Path, tipo_arquivo: str, *, etapa: str = "completo") -> list[Achado]:
     if tipo_arquivo == "solucao":
+        if etapa == "solucao":
+            return []
         processo = caminho.with_name(caminho.stem + " - Processo de resolução.md")
         legado = caminho.with_name(caminho.stem + " - Erros.md")
         if not processo.exists() and not legado.exists():
@@ -263,7 +271,11 @@ def checar_par(caminho: Path, tipo_arquivo: str) -> list[Achado]:
     return []
 
 
-def verificar_arquivo(caminho: Path, texto: str | None = None) -> list[Achado]:
+def verificar_arquivo(
+    caminho: Path, texto: str | None = None, *, etapa: str = "completo"
+) -> list[Achado]:
+    if etapa not in {"solucao", "completo"}:
+        raise ValueError(f"Etapa inválida: {etapa}")
     if texto is None:
         texto = caminho.read_text(encoding="utf-8")
     limpo = sem_codigo(texto)
@@ -286,7 +298,7 @@ def verificar_arquivo(caminho: Path, texto: str | None = None) -> list[Achado]:
         achados += checar_erros(caminho, linhas)
     elif tipo_arquivo == "extras":
         achados += checar_extras(caminho, linhas)
-    achados += checar_par(caminho, tipo_arquivo)
+    achados += checar_par(caminho, tipo_arquivo, etapa=etapa)
     return sorted(achados, key=lambda a: a.linha)
 
 
@@ -317,10 +329,14 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description="Verifica os arquivos compilados pela skill consolidar-exercicio.")
     parser.add_argument("caminhos", nargs="*", type=Path)
+    parser.add_argument(
+        "--etapa", choices=("solucao", "completo"), default="completo",
+        help="solucao permite apenas a ausência temporária do processo; completo exige o par (padrão)",
+    )
     args = parser.parse_args(argv)
 
     arquivos = coletar(args.caminhos)
-    achados = [a for caminho in arquivos for a in verificar_arquivo(caminho)]
+    achados = [a for caminho in arquivos for a in verificar_arquivo(caminho, etapa=args.etapa)]
     for achado in achados:
         print(achado.formatar())
     erros = sum(a.nivel == "erro" for a in achados)

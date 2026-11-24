@@ -1,4 +1,6 @@
 """Testes das regras do verificar.py, com arquivos escritos numa pasta temporária."""
+import contextlib
+import io
 import sys
 import tempfile
 import unittest
@@ -49,7 +51,7 @@ O acervo não tem notas de lógica.
 """
 
 
-PROCESSO = """Registro das orientações e revisões observadas na conversa.
+PROCESSO_HISTORICO = """Registro das orientações e revisões observadas na conversa.
 
 ## Ponto de partida
 
@@ -69,6 +71,29 @@ O acervo não cobre a regra formal. O encaminhamento para estudo foi combinado.
 ## Síntese do aprendizado
 
 A versão final justifica as duas inclusões e conclui pela antissimetria.
+"""
+
+
+PROCESSO = """Análise técnica dos problemas e de suas correções.
+
+## Abordagem inicial
+
+A estratégia por dupla inclusão já fornecia um dos sentidos.
+
+## Problemas e correções
+
+### Distinguir as duas direções
+
+Pela definição da nota Subconjunto, cada inclusão exige uma direção da
+implicação por elementos. A inclusão contrária completa a igualdade.
+
+### Explicitar uma regra lógica
+
+O acervo não cobre a regra formal de aplicação da hipótese universal.
+
+## Síntese técnica
+
+A resposta justifica as duas inclusões e conclui pela antissimetria.
 """
 
 
@@ -196,12 +221,12 @@ class TestProcessoDeResolucao(Base):
         self.escrever("Exercício 9.9.md", SOLUCAO)
         caminho = self.escrever(
             "Exercício 9.9 - Processo de resolução.md",
-            PROCESSO.replace("## Síntese do aprendizado", "## Outras"),
+            PROCESSO.replace("## Síntese técnica", "## Outras"),
         )
         self.assertIn(("secoes", "erro"), self.regras(caminho))
-        trocado = PROCESSO.replace("## Ponto de partida", "## TROCA")
-        trocado = trocado.replace("## Ciclos de revisão", "## Ponto de partida")
-        trocado = trocado.replace("## TROCA", "## Ciclos de revisão")
+        trocado = PROCESSO.replace("## Abordagem inicial", "## TROCA")
+        trocado = trocado.replace("## Problemas e correções", "## Abordagem inicial")
+        trocado = trocado.replace("## TROCA", "## Problemas e correções")
         caminho.write_text(trocado, encoding="utf-8")
         self.assertIn(("secoes", "erro"), self.regras(caminho))
 
@@ -222,17 +247,17 @@ class TestProcessoDeResolucao(Base):
             "Exercício 9.9 - Processo de resolução.md",
             """Registro do processo.
 
-## Ponto de partida
+## Abordagem inicial
 
 A primeira tentativa já estava adequada à teoria.
 
-## Ciclos de revisão
+## Problemas e correções
 
-Não houve gap nem necessidade de orientação corretiva.
+Não houve gap nem necessidade de correção.
 
-## Síntese do aprendizado
+## Síntese técnica
 
-A primeira versão foi validada, sem ciclo de correção.
+A abordagem inicial satisfaz o referencial sem desenvolvimento corretivo.
 """,
         )
         self.assertEqual(self.regras(caminho), set())
@@ -254,6 +279,76 @@ A primeira versão foi validada, sem ciclo de correção.
             "Exercício 9.9.md", SOLUCAO.replace("## Enunciado", "## Concepção")
         )
         self.assertEqual(self.regras(caminho), set())
+
+    def test_formato_historico_do_processo_continua_valido(self):
+        self.escrever("Exercício 9.9.md", SOLUCAO)
+        caminho = self.escrever("Exercício 9.9 - Processo de resolução.md", PROCESSO_HISTORICO)
+        self.assertEqual(self.regras(caminho), set())
+
+    def test_processo_historico_incompleto_ainda_e_detectado(self):
+        self.escrever("Exercício 9.9.md", SOLUCAO)
+        caminho = self.escrever(
+            "Exercício 9.9 - Processo de resolução.md",
+            PROCESSO_HISTORICO.replace("## Síntese do aprendizado", "## Outras"),
+        )
+        self.assertIn(("secoes", "erro"), self.regras(caminho))
+
+    def test_misturar_os_dois_formatos_nao_forma_um_processo_valido(self):
+        self.escrever("Exercício 9.9.md", SOLUCAO)
+        caminho = self.escrever(
+            "Exercício 9.9 - Processo de resolução.md",
+            PROCESSO.replace("## Problemas e correções", "## Ciclos de revisão"),
+        )
+        self.assertIn(("secoes", "erro"), self.regras(caminho))
+
+
+class TestEtapas(Base):
+    def test_solucao_intermediaria_dispensa_so_o_processo_ausente(self):
+        caminho = self.escrever("Exercício 9.9.md", SOLUCAO)
+        self.assertEqual(verificar.verificar_arquivo(caminho, etapa="solucao"), [])
+        self.assertIn(("par", "erro"), self.regras(caminho))
+        completo = verificar.verificar_arquivo(caminho, etapa="completo")
+        self.assertTrue(any(a.regra == "par" for a in completo))
+
+    def test_etapa_solucao_mantem_as_demais_validacoes(self):
+        texto = SOLUCAO.replace("## Enunciado", "## Demonstração") + "\nVer [[Subconjunto]].\n"
+        caminho = self.escrever("Exercício 9.9.md", texto)
+        regras = {(a.regra, a.nivel) for a in verificar.verificar_arquivo(caminho, etapa="solucao")}
+        self.assertNotIn(("par", "erro"), regras)
+        self.assertTrue({("enunciado", "erro"), ("wikilink", "erro")} <= regras)
+
+    def test_registros_orfaos_continuam_invalidos_na_etapa_solucao(self):
+        for nome, texto in [
+            ("Exercício 9.9 - Processo de resolução.md", PROCESSO),
+            ("Exercício 9.8 - Erros.md", ERROS),
+        ]:
+            with self.subTest(nome=nome):
+                caminho = self.escrever(nome, texto)
+                achados = verificar.verificar_arquivo(caminho, etapa="solucao")
+                self.assertTrue(any(a.regra == "par" for a in achados))
+
+    def test_etapa_solucao_nao_dispensa_validar_o_processo_presente(self):
+        self.escrever("Exercício 9.9.md", SOLUCAO)
+        caminho = self.escrever(
+            "Exercício 9.9 - Processo de resolução.md",
+            PROCESSO.replace("## Síntese técnica", "## Outras"),
+        )
+        achados = verificar.verificar_arquivo(caminho, etapa="solucao")
+        self.assertTrue(any(a.regra == "secoes" and a.nivel == "erro" for a in achados))
+
+    def test_cli_distingue_etapas_e_exige_par_ao_final(self):
+        caminho = self.escrever("Exercício 9.9.md", SOLUCAO)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(verificar.main([str(caminho)]), 1)
+            self.assertEqual(verificar.main(["--etapa", "solucao", str(caminho)]), 0)
+            self.assertEqual(verificar.main(["--etapa", "completo", str(caminho)]), 1)
+            self.escrever("Exercício 9.9 - Processo de resolução.md", PROCESSO)
+            self.assertEqual(verificar.main([str(caminho), str(caminho.parent / "Exercício 9.9 - Processo de resolução.md")]), 0)
+
+    def test_etapa_desconhecida_nao_e_aceita_pela_api(self):
+        caminho = self.escrever("Exercício 9.9.md", SOLUCAO)
+        with self.assertRaises(ValueError):
+            verificar.verificar_arquivo(caminho, etapa="outra")
 
 
 if __name__ == "__main__":

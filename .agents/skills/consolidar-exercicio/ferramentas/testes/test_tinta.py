@@ -48,8 +48,28 @@ class TestFamilias(unittest.TestCase):
             self.assertEqual(rotulo(cor), tinta.VERDE, cor)
 
     def test_outra_cor(self):
-        for cor in [(200, 40, 40), (230, 150, 30), (200, 50, 200)]:
+        for cor in [(230, 150, 30), (200, 50, 200)]:
             self.assertEqual(rotulo(cor), tinta.OUTRA, cor)
+
+    def test_familia_vermelha_inclui_tons_claros_escuros_e_rosados(self):
+        for cor in [(200, 40, 40), (255, 190, 190), (110, 20, 30), (240, 0, 100), (230, 100, 80)]:
+            with self.subTest(cor=cor):
+                self.assertEqual(rotulo(cor), tinta.VERMELHO)
+
+    def test_limites_do_vermelho_na_volta_do_matiz(self):
+        # Matizes exatos: 330 e 24 entram; 329 e 25 ficam fora.
+        for cor, esperado in [
+            ((240, 0, 120), tinta.VERMELHO),
+            ((240, 96, 0), tinta.VERMELHO),
+            ((240, 0, 124), tinta.OUTRA),
+            ((240, 100, 0), tinta.OUTRA),
+        ]:
+            with self.subTest(cor=cor):
+                self.assertEqual(rotulo(cor), esperado)
+
+    def test_vermelho_nao_altera_o_limiar_de_croma(self):
+        self.assertEqual(rotulo((255, 235, 235)), tinta.FUNDO)
+        self.assertEqual(rotulo((100, 80, 80)), tinta.PRETO)
 
 
 class TestFaixas(unittest.TestCase):
@@ -65,6 +85,23 @@ class TestFaixas(unittest.TestCase):
         self.assertGreater(x0, 75)
         self.assertLess(segunda.alcance[tinta.PRETO][1], 75)
         self.assertEqual([f for f, _ in tinta.presentes(terceira.contagens)], [tinta.VERDE])
+
+    def test_abertura_vermelha_e_desenvolvimento_misto(self):
+        img = pagina_sintetica()
+        img[20:36, 20:300] = (200, 40, 40)
+        resultado = tinta.faixas(tinta.classificar(img))
+        self.assertEqual(len(resultado), 3)
+        self.assertEqual([f for f, _ in tinta.presentes(resultado[0].contagens)], [tinta.VERMELHO])
+        self.assertIn(tinta.VERMELHO, resultado[0].alcance)
+        self.assertIn(tinta.PRETO, resultado[1].alcance)
+        self.assertIn(tinta.AZUL, resultado[1].alcance)
+        with tempfile.TemporaryDirectory() as pasta:
+            caminho = Path(pasta) / "6.1.png"
+            Image.fromarray(img).save(caminho)
+            saida = io.StringIO()
+            with contextlib.redirect_stdout(saida):
+                tinta.cmd_faixas([caminho], reducao=1)
+        self.assertIn("vermelho", saida.getvalue())
 
     def test_ruido_nao_vira_faixa(self):
         img = np.full((200, 200, 3), 255, np.uint8)
@@ -102,6 +139,28 @@ class TestVersoes(unittest.TestCase):
         self.assertIn("preto", saida.getvalue())
         self.assertIn("azul", saida.getvalue())
 
+    def test_inventario_reconhece_vermelho_sem_pedir_confirmacao(self):
+        img = pagina_sintetica()
+        img[20:36, 20:300] = (200, 40, 40)
+        with tempfile.TemporaryDirectory() as pasta:
+            Image.fromarray(img).save(Path(pasta) / "6.1.png")
+            saida = io.StringIO()
+            with contextlib.redirect_stdout(saida):
+                tinta.cmd_inventario(Path(pasta), reducao=1)
+        self.assertIn("vermelho", saida.getvalue())
+        self.assertNotIn("**Atenção:**", saida.getvalue())
+
+    def test_inventario_ainda_sinaliza_cor_desconhecida(self):
+        img = pagina_sintetica()
+        img[20:36, 20:300] = (230, 150, 30)
+        with tempfile.TemporaryDirectory() as pasta:
+            Image.fromarray(img).save(Path(pasta) / "1.png")
+            saida = io.StringIO()
+            with contextlib.redirect_stdout(saida):
+                tinta.cmd_inventario(Path(pasta), reducao=1)
+        self.assertIn("**Atenção:**", saida.getvalue())
+        self.assertIn("outra", saida.getvalue())
+
 
 class TestArquivos(unittest.TestCase):
     def test_ordem_natural_e_pastas_ocultas(self):
@@ -113,6 +172,19 @@ class TestArquivos(unittest.TestCase):
                 Image.new("RGB", (4, 4), "white").save(raiz / nome)
             nomes = [p.relative_to(raiz).as_posix() for p in tinta.listar_imagens(raiz)]
         self.assertEqual(nomes, ["1.png", "2.png", "10.png", "Restos/1.png"])
+
+    def test_insercoes_seguem_a_parte_base_antes_da_proxima(self):
+        with tempfile.TemporaryDirectory() as pasta:
+            raiz = Path(pasta)
+            (raiz / "Restos").mkdir()
+            for nome in ["7.png", "6.10.webp", "6.2.jpg", "6.1.png", "6.jpeg", "Restos/6.1.png", "Restos/6.png"]:
+                Image.new("RGB", (4, 4), "white").save(raiz / nome)
+            nomes = [p.relative_to(raiz).as_posix() for p in tinta.listar_imagens(raiz)]
+        self.assertEqual(nomes, ["6.jpeg", "6.1.png", "6.2.jpg", "6.10.webp", "7.png", "Restos/6.png", "Restos/6.1.png"])
+
+    def test_extensao_desempata_a_mesma_identificacao(self):
+        imagens = [Path("6.png"), Path("6.1.png"), Path("6.jpeg")]
+        self.assertEqual(sorted(imagens, key=tinta.chave_natural), [Path("6.jpeg"), Path("6.png"), Path("6.1.png")])
 
     def test_transparencia_vira_papel(self):
         img = Image.new("RGBA", (10, 10), (0, 0, 0, 0))
@@ -134,6 +206,22 @@ class TestArquivos(unittest.TestCase):
             azul = tinta.classificar(tinta.carregar(Path(pasta) / "camadas" / "p.azul.png"))
         self.assertEqual(gerados, ["p.azul.png", "p.preto.png", "p.verde.png"])
         self.assertEqual(set(np.unique(azul)), {tinta.FUNDO, tinta.AZUL})
+
+    def test_camada_vermelha_preserva_so_os_tracos_correspondentes(self):
+        img = pagina_sintetica()
+        img[20:36, 20:300] = (200, 40, 40)
+        with tempfile.TemporaryDirectory() as pasta:
+            origem = Path(pasta) / "6.1.png"
+            destino = Path(pasta) / "camadas"
+            Image.fromarray(img).save(origem)
+            with contextlib.redirect_stdout(io.StringIO()):
+                tinta.cmd_camadas([origem], destino, reducao=1)
+            nomes = sorted(p.name for p in destino.iterdir())
+            vermelho = tinta.carregar(destino / "6.1.vermelho.png")
+        self.assertEqual(nomes, ["6.1.azul.png", "6.1.preto.png", "6.1.verde.png", "6.1.vermelho.png"])
+        self.assertEqual(set(np.unique(tinta.classificar(vermelho))), {tinta.FUNDO, tinta.VERMELHO})
+        self.assertTrue(np.array_equal(vermelho[20:36, 20:300], img[20:36, 20:300]))
+        self.assertTrue((vermelho[100:116, 20:280] == 255).all())
 
 
 if __name__ == "__main__":

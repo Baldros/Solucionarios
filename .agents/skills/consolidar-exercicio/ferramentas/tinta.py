@@ -1,9 +1,9 @@
-"""Mede a tinta dos manuscritos por família de cor: preto, azul, verde e outra.
+"""Mede a tinta dos manuscritos por família de cor: preto, azul, verde, vermelho e outra.
 
 As cores dos manuscritos são famílias de tom, não valores exatos. Um pixel com
 pouca cor (croma baixo) é tinta preta, seja qual for o brilho: o traço leve,
 que parece cinza, também é preto. Um pixel com cor é classificado pelo matiz:
-azul, verde ou outra (que pede confirmação do usuário). O papel é o pixel sem
+azul, verde, vermelho ou outra (que pede confirmação do usuário). O papel é o pixel sem
 cor e claro.
 
 Uso, a partir da raiz do repositório (a .venv é ignorada pelo git):
@@ -43,13 +43,15 @@ from PIL import Image, ImageOps
 
 # Códigos devolvidos por classificar().
 FUNDO, PRETO, AZUL, VERDE, OUTRA = range(5)
-NOMES = {PRETO: "preto", AZUL: "azul", VERDE: "verde", OUTRA: "outra"}
+VERMELHO = 5  # preserva os códigos das famílias existentes
+NOMES = {PRETO: "preto", AZUL: "azul", VERDE: "verde", VERMELHO: "vermelho", OUTRA: "outra"}
 
 # Limiares, calibrados nas páginas do Exercício 1.1 do Curso de Análise.
 CROMA_MIN = 35  # max(R,G,B) − min(R,G,B) a partir do qual o pixel tem cor
 BRILHO_FUNDO = 215  # pixel sem cor com max(R,G,B) a partir disso é papel
 AZUL_MATIZ = (180.0, 290.0)  # graus, intervalo semiaberto
 VERDE_MATIZ = (70.0, 180.0)
+VERMELHO_MATIZ = (330.0, 25.0)  # [330, 360) ou [0, 25): atravessa o zero
 PRESENCA_MIN = 0.005  # fração da tinta abaixo da qual uma família é ruído
 MISTO_MIN = 0.10  # fração da segunda família que torna uma faixa mista
 CONTENCAO_MIN = 0.90  # fração da tinta de uma imagem dentro da de outra
@@ -76,7 +78,7 @@ def carregar(caminho: Path, reducao: int = 1) -> np.ndarray:
 
 
 def classificar(rgb: np.ndarray) -> np.ndarray:
-    """Rotula cada pixel: FUNDO, PRETO, AZUL, VERDE ou OUTRA."""
+    """Rotula cada pixel: FUNDO, PRETO, AZUL, VERDE, VERMELHO ou OUTRA."""
     px = rgb.astype(np.int16)
     maximo = px.max(axis=-1)
     croma = maximo - px.min(axis=-1)
@@ -95,6 +97,7 @@ def classificar(rgb: np.ndarray) -> np.ndarray:
         familia = np.full(matiz.shape, OUTRA, dtype=np.uint8)
         familia[(matiz >= VERDE_MATIZ[0]) & (matiz < VERDE_MATIZ[1])] = VERDE
         familia[(matiz >= AZUL_MATIZ[0]) & (matiz < AZUL_MATIZ[1])] = AZUL
+        familia[(matiz >= VERMELHO_MATIZ[0]) | (matiz < VERMELHO_MATIZ[1])] = VERMELHO
         rotulos[colorido] = familia
     return rotulos
 
@@ -189,9 +192,12 @@ def faixas(rotulos: np.ndarray, folga: int | None = None) -> list[Faixa]:
 
 
 def chave_natural(caminho: Path) -> tuple:
-    """Ordena 2.png antes de 10.png, e arquivos numerados antes de subpastas."""
-    partes = re.split(r"(\d+)", caminho.as_posix().lower())
-    return tuple((0, int(p)) if p.isdigit() else (1, p) for p in partes if p)
+    """Ordena 6, 6.1, 6.2, 6.10, 7, e números antes de nomes de subpastas."""
+    # A extensão não deve fazer 6.1.png preceder 6.png. O nome completo
+    # desempata formatos diferentes da mesma identificação numérica.
+    partes = re.split(r"(\d+)", caminho.with_suffix("").as_posix().lower())
+    natural = tuple((0, int(p)) if p.isdigit() else (1, p) for p in partes if p)
+    return natural, caminho.as_posix().lower()
 
 
 def listar_imagens(alvo: Path) -> list[Path]:
@@ -253,7 +259,7 @@ def cmd_inventario(pasta: Path, reducao: int) -> None:
         print(linha)
     if outras:
         print(
-            "\n**Atenção:** tinta fora das famílias preta, azul e verde em "
+            "\n**Atenção:** tinta fora das famílias preta, azul, verde e vermelha em "
             + ", ".join(outras)
             + ". Confira na imagem e pergunte ao usuário o papel dessa cor."
         )
@@ -298,7 +304,7 @@ def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(
-        description="Mede a tinta dos manuscritos por família de cor (preto, azul, verde)."
+        description="Mede a tinta dos manuscritos por família de cor (preto, azul, verde, vermelho)."
     )
     comandos = parser.add_subparsers(dest="comando", required=True)
 
