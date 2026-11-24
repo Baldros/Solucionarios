@@ -1,121 +1,130 @@
-Este registro organiza o processo de aprimoramento da resolução do Exercício 1.2: os gaps discutidos, os fundamentos consultados, as ajudas recebidas e as revisões efetivamente feitas. A demonstração principal foi concluída e consolidada; a discussão adicional proposta como apêndice permanece pendente e não integra a solução final.
+Este documento reúne os problemas trabalhados na caracterização da interseção e o desenvolvimento de suas correções. O foco é a relação entre as hipóteses, os elementos dos conjuntos e as duas inclusões necessárias à igualdade.
 
-## Ponto de partida
+## Abordagem inicial
 
-A tentativa já enunciava corretamente a caracterização desejada: (1) $X\subseteq A$ e $X\subseteq B$; (2) todo conjunto $Y$ contido em $A$ e em $B$ está contido em $X$. A rota escolhida era provar $X=A\cap B$ por dupla inclusão, acompanhando os elementos dos conjuntos.
-
-A propriedade (1) fornecia a primeira inclusão, $X\subseteq A\cap B$. O ponto central ainda aberto era usar a propriedade universal (2) para obter $A\cap B\subseteq X$. Havia também dúvidas sobre a relação entre igualdade por elementos e antissimetria, uma equivalência sobre subconjuntos $Y$ sem os dois sentidos desenvolvidos e problemas de conectivos e quantificação.
-
-Na primeira avaliação, anterior à mudança da skill para o fluxo de professor, o agente apresentou uma solução integral, incluindo a escolha $Y=A\cap B$. Depois, o usuário pediu explicitamente ciclos de orientação, reformulação própria e releitura até uma resposta adequada. O registro distingue essa ajuda inicial das correções que o usuário passou a produzir; a versão final não é apresentada como uma descoberta sem orientação.
-
-O referencial foi formado pelas notas Axioma da Extensão, Subconjunto, Operações de Conjuntos e Notações de Teoria dos Conjuntos, com consulta também a Lacunas de Teoria dos Conjuntos. As definições e propriedades desse material orientaram a avaliação.
-
-## Ciclos de revisão
-
-### Adaptar as propriedades sem abandonar a dupla inclusão
-
-A reflexão inicial reconhecia que a caracterização da união precisava ser adaptada. O usuário também pediu que o agente discordasse se existisse uma adaptação direta. A orientação explicou a diferença: a união é o menor conjunto que contém os dois conjuntos; a interseção é o maior conjunto contido nos dois. As condições sobre $X$ e sobre os conjuntos de comparação mudam de sentido, e o método da dupla inclusão continua válido.
-
-As notas Operações de Conjuntos e Subconjunto fundamentam essa leitura. A formulação de (1) e (2) proposta pelo usuário estava correta e foi preservada. A reflexão foi consolidada na solução como explicação da adaptação, sem conservar a sensação inicial de impedimento como conclusão matemática.
-
-Na recuperação da prova anterior aparecia ainda a troca entre $X\subseteq A\cup B$ e a conjunção $X\subseteq A$ e $X\subseteq B$. Essas afirmações não são equivalentes: para $A=\{1\}$, $B=\{2\}$ e $X=\{1,2\}$, a primeira vale e a conjunção falha. Esse ponto pertence à comparação inicial com a união; a prova final usa a definição correta da interseção, verificada nas revisões seguintes.
-
-### Distinguir a inclusão repetida da inclusão que falta
-
-O agente apontou que $X\subseteq A\cap B$ e $A\cap B\supseteq X$ são duas escritas da mesma afirmação. Para fechar a igualdade, é necessário demonstrar também $A\cap B\subseteq X$. A explicação retomou a definição de inclusão da nota Subconjunto e o critério de igualdade da nota Axioma da Extensão, mudando o conjunto de partida do elemento arbitrário em cada sentido.
-
-Foi usado o exemplo $X=\{1\}$ e $Z=\{1,2\}$: $X\subseteq Z$ vale, e sua reescrita $Z\supseteq X$ também, mas $Z\subseteq X$ não vale. Isso esclarece por que reescrever uma inclusão não fornece a recíproca.
-
-O usuário explicou que a duplicação era um erro de escrita e perguntou se a construção autorizava a inclusão pretendida. O agente reconheceu que havia dado peso excessivo ao símbolo como evidência de dificuldade conceitual e confirmou que $X\subseteq A\cap B$ decorre de (1). Esse lapso não basta para diagnosticar incompreensão da antissimetria.
-
-O fechamento veio com a nova aplicação de (2), que efetivamente forneceu a inclusão contrária. A solução consolidada reúne as duas inclusões por uma conjunção e conclui pela antissimetria.
-
-### Manter a direção das condições sobre Y
-
-Ao discutir a volta, o usuário perguntou se deveria fazer $Y$ conter $A$ e $B$, em vez de estar contido neles. O agente confirmou que a propriedade (2) já estava escrita corretamente: $Y\subseteq A$ e $Y\subseteq B$ implicam $Y\subseteq X$.
-
-A orientação distinguiu o alvo da segunda parte da prova das hipóteses disponíveis. A volta troca a inclusão a demonstrar entre $X$ e $A\cap B$; a hipótese (2) conserva seu sentido. O exemplo $A=\{1,2\}$ e $B=\{2,3\}$ ajudou a comparar estar contido nos dois com conter os dois: a interseção é $\{2\}$, enquanto a união é $\{1,2,3\}$.
-
-As notas Subconjunto e Operações de Conjuntos sustentam essa distinção. Na revisão, o usuário manteve as condições de estar contido em ambos e escolheu um conjunto que as satisfaz. A aplicação posterior de (2) confirmou que a direção necessária estava presente.
-
-### Aplicar a hipótese universal ao conjunto decisivo
-
-A cadeia $A\cap B\supseteq X\supseteq Y$ é válida quando $Y$ satisfaz as condições de (2), mas a cadeia para um único $Y$ não fornece automaticamente $A\cap B\subseteq X$. Faltava aproveitar que (2) se aplica a todo conjunto admissível e escolher um que reúna a interseção inteira.
-
-Além da solução integral fornecida inicialmente, o agente voltou a indicar a escolha da própria interseção e perguntou qual conjunto poderia ocupar o lugar de $Y$ e por que satisfaria as duas condições. A orientação foi explícita; a posterior elaboração do usuário ocorreu com essa ajuda.
-
-O usuário acrescentou uma definição de $Y$ por condição, a aplicação de (2) e a cadeia $A\cap B\subseteq Y\subseteq X$. Após a correção do conectivo, a definição passou a fixar $Y=A\cap B$. Ela garante $Y\subseteq A$ e $Y\subseteq B$, de modo que (2) fornece $Y\subseteq X$. A transitividade então dá $A\cap B\subseteq X$.
-
-As notas Operações de Conjuntos e Subconjunto fundamentam a admissibilidade da escolha e o encadeamento das inclusões. A regra formal de aplicar uma afirmação universal a um caso particular não tem nota própria no acervo; foi explicada na conversa e indicada como possível conteúdo de Extras fora do acervo. A criação desse extra permanece uma proposta, sem impedir o uso concreto já explicado e validado na demonstração.
-
-A releitura da revisão confirmou a cadeia e sua conclusão. Esse foi o argumento que encerrou o gap central da volta.
-
-### Distinguir somente elementos comuns de todos os elementos comuns
-
-Na primeira versão da continuação, a definição de $Y$ usava o conectivo “ou”, selecionando a união. Além disso, a frase de que $Y$ era composto somente por elementos de $A\cap B$ foi usada para justificar $A\cap B\subseteq Y$.
-
-A orientação separou as duas questões. Pela nota Operações de Conjuntos, os elementos comuns são selecionados com “e”. Pela definição de inclusão da nota Subconjunto, dizer somente elementos da interseção garante $Y\subseteq A\cap B$; isso não afirma que todos os elementos da interseção foram selecionados. O exemplo $A=B=\{1,2\}$ e $Y=\{1\}$ mostra essa diferença: todos os elementos de $Y$ são comuns, mas $A\cap B\nsubseteq Y$. O exemplo esclarece a frase isolada; não pretende satisfazer todas as hipóteses do exercício.
-
-O usuário informou que havia corrigido os dois pontos. Na revisão conferida, passou a constar
+A caracterização proposta para $X=A\cap B$ consiste em:
 
 $$
-Y=\{y:\ y\in A\ \land\ y\in B\}.
+\begin{aligned}
+&(1)\quad X\subseteq A\ \land\ X\subseteq B,\\
+&(2)\quad \forall Y:\ \bigl(Y\subseteq A\ \land\ Y\subseteq B\bigr)\implies Y\subseteq X.
+\end{aligned}
 $$
 
-Essa definição é mais forte que a frase “somente elementos”: seleciona exatamente todos os elementos comuns e fixa $Y=A\cap B$. Assim, já fundamenta $A\cap B\subseteq Y$. O agente reconheceu que não faltava uma nova ideia matemática depois dessa correção, ainda que a frase mais fraca permanecesse no texto.
+A concepção e a estratégia por dupla inclusão são adequadas. A propriedade (1) fornece $X\subseteq A\cap B$. A dependência central ainda aberta era obter $A\cap B\subseteq X$ pela propriedade (2). A cadeia $A\cap B\supseteq X\supseteq Y$, para um conjunto admissível $Y$, ainda não explicita esse sentido.
 
-Houve divergência de leitura durante a conferência. O usuário reforçou que a fonte eram as imagens exportadas e enviou uma captura mostrando as alterações. A releitura confirmou as correções. O fechamento foi baseado no conteúdo corrigido, sem exigir que o usuário repetisse verbalmente o que a definição já estabelecia.
+O desenvolvimento também exigia distinguir a inclusão de sua reescrita, selecionar todos os elementos comuns ao definir $Y$ e escrever corretamente os conectivos e o alcance dos quantificadores. Os fundamentos estão nas notas Subconjunto, Axioma da Extensão, Operações de Conjuntos e Notações de Teoria dos Conjuntos.
 
-A sugestão de introduzir a definição com “Escolha”, em vez de “Ou seja”, foi tratada como melhoria editorial: deixa claro que se toma um caso particular da hipótese universal. Esse ajuste foi incorporado na consolidação.
+## Problemas e correções
 
-### Registrar os lapsos de atenção e normalizar os conectivos
+### Adaptar a caracterização da união
 
-O usuário identificou a troca de “e” por “ou” como descuido de atenção e pediu explicitamente que os erros de atenção também constassem do processo. A revisão confirmou o “e” tanto nas condições da propriedade (2) quanto na definição por compreensão de $Y$. Esse desfecho foi registrado como correção de escrita e atenção declarada pelo próprio usuário, sem inferir uma dificuldade conceitual apenas da troca isolada.
+O ponto conceitual da adaptação é mudar o papel das inclusões. A união é o menor conjunto que contém $A$ e $B$; a interseção é o maior conjunto contido em ambos. As propriedades (1) e (2) acima expressam esse segundo papel. A dupla inclusão continua sendo uma estratégia válida, conforme as notas Subconjunto e Axioma da Extensão.
 
-A nota Operações de Conjuntos fornece a régua: $y\in A\cap B$ exige $y\in A\land y\in B$; a disjunção descreve a união. As notas Subconjunto e Axioma da Extensão também exigem que as duas inclusões da igualdade valham conjuntamente.
+Na comparação com a união, é necessário distinguir
 
-Nos rascunhos anteriores continuavam aparecendo conectivos antigos, quantificadores sobrepostos e uma pertinência sem o símbolo correspondente. Eles não foram todos reescritos pelo usuário. A consolidação normalizou esses trechos de acordo com as definições, as explicações já dadas e a versão final validada: conjunção nas condições simultâneas, conjunção entre as duas inclusões e quantificação com escopo explícito. Não se atribui ao usuário uma revisão material de todos os rascunhos antigos.
+$$
+X\subseteq A\cup B
+\qquad\text{de}\qquad
+X\subseteq A\ \land\ X\subseteq B.
+$$
 
-O vermelho que indicava uma justificativa em aberto foi esclarecido pelo usuário como uma observação pessoal. Seu papel foi registrar a percepção da pendência; não foi transformado em uma nova convenção geral de cores. A cadeia final resolveu a pendência apontada.
+A primeira afirmação não implica a segunda: $A=\{1\}$, $B=\{2\}$ e $X=\{1,2\}$ satisfazem $X\subseteq A\cup B$, mas $X$ não está contido em nenhum dos dois conjuntos. Pela nota Operações de Conjuntos, a conjunção corresponde a $X\subseteq A\cap B$. Essa distinção permite adaptar as hipóteses sem confundir as duas operações.
 
-### Dar ao quantificador o alcance da equivalência inteira
+### Separar o lapso de direção da inclusão ainda não demonstrada
 
-Uma formulação intermediária colocava o universal junto de $y\in Y$ e depois ligava esse trecho a uma equivalência. O agente indicou que a pertinência a $Y$ deve ser uma das afirmações comparadas, e que o quantificador precisa reger a equivalência inteira:
+As expressões $X\subseteq A\cap B$ e $A\cap B\supseteq X$ repetem uma única inclusão. O alvo da segunda parte é $A\cap B\subseteq X$.
+
+Há duas camadas nesse ponto. A direção da segunda expressão era um **lapso de escrita** em relação ao alvo pretendido. Corrigir o símbolo explicita esse alvo, mas permanece uma **omissão** se ainda não houver argumento que o estabeleça. A antissimetria, nas notas Subconjunto e Axioma da Extensão, exige as duas inclusões conjuntamente.
+
+Por exemplo, $X=\{1\}$ e $Z=\{1,2\}$ satisfazem $X\subseteq Z$ e $Z\supseteq X$, mas não $Z\subseteq X$. A segunda escrita não acrescenta uma condição. O fechamento da igualdade dependeu de desenvolver a inclusão contrária com (2), e não apenas de trocar o sinal.
+
+### Manter as condições de admissibilidade de Y
+
+A dúvida sobre fazer $Y$ conter $A$ e $B$ exigia separar o alvo da prova das condições da hipótese. A volta é a inclusão $A\cap B\subseteq X$; a propriedade (2) continua exigindo $Y\subseteq A$ e $Y\subseteq B$ para concluir $Y\subseteq X$.
+
+A distinção é visível com $A=\{1,2\}$ e $B=\{2,3\}$. O conjunto $\{2\}$ está contido em ambos, enquanto $\{1,2,3\}$ contém ambos. As notas Subconjunto e Operações de Conjuntos fundamentam a diferença. Inverter as condições de (2) mudaria a hipótese disponível.
+
+A escolha por todos os elementos comuns respeita as condições originais. Assim, a correção do argumento mantém o sentido de (2) e escolhe um conjunto ao qual ela possa ser aplicada.
+
+### Escolher o conjunto que fecha a volta
+
+O gap central era aplicar a hipótese universal ao conjunto decisivo. Para um $Y$ admissível, $A\cap B\supseteq X\supseteq Y$ apenas coloca $Y$ dentro de $X$ e $X$ dentro da interseção. Essa cadeia, considerada isoladamente, não estabelece que a interseção inteira está em $X$.
+
+A escolha
+
+$$
+Y=\{y:\ y\in A\ \land\ y\in B\}
+$$
+
+fixa $Y=A\cap B$. Pela definição da nota Operações de Conjuntos, cada elemento de $Y$ pertence a $A$ e a $B$, logo $Y\subseteq A$ e $Y\subseteq B$. A hipótese (2) fornece $Y\subseteq X$.
+
+Além disso, todo elemento de $A\cap B$ satisfaz a condição que define $Y$, portanto $A\cap B\subseteq Y$. Obtém-se
+
+$$
+A\cap B\subseteq Y\subseteq X.
+$$
+
+A transitividade, na nota Subconjunto, conclui $A\cap B\subseteq X$. Esse argumento preenche a omissão e, junto da primeira inclusão, permite usar a antissimetria.
+
+Aplicar (2) a esse $Y$ é usar uma afirmação universal em um caso particular que satisfaz suas condições. O acervo não possui nota própria da regra lógica formal de instanciação universal; seu uso concreto está explicitado pela verificação das duas condições. A formalização geral permanece como possível estudo em Extras fora do acervo.
+
+### Selecionar todos os elementos comuns
+
+A frase de que $Y$ contém somente elementos de $A\cap B$ garante $Y\subseteq A\cap B$. Ela não basta para justificar $A\cap B\subseteq Y$: uma restrição sobre quais elementos podem entrar não afirma que todos eles entraram.
+
+Por exemplo, $A=B=\{1,2\}$ e $Y=\{1\}$ satisfazem essa restrição, mas $2\in A\cap B$ e $2\notin Y$. O exemplo refuta a suficiência da frase isolada; não é um contraexemplo ao conjunto completo de hipóteses do exercício.
+
+O desenvolvimento corretivo substitui essa justificativa insuficiente pela definição exata $Y=\{y:y\in A\land y\in B\}$. Por ela, todo elemento comum pertence a $Y$, e a inclusão desejada fica justificada. As notas Subconjunto e Operações de Conjuntos decidem o ponto. A definição já fornece a informação necessária mesmo que uma explicação verbal mais fraca permaneça ao lado dela.
+
+### Corrigir os conectivos e os lapsos de atenção
+
+Uma definição intermediária de $Y$ usava $\lor$ no lugar de $\land$. Essa escrita seleciona $A\cup B$. A correção para $Y=\{y:y\in A\land y\in B\}$ seleciona a interseção, conforme a nota Operações de Conjuntos. A troca de conectivo foi tratada como **lapso de atenção e escrita** nos trechos em que a intenção e o desenvolvimento eram selecionar elementos comuns.
+
+A mesma precisão vale para as condições de (2): $Y$ precisa estar contido em $A$ **e** em $B$. Na igualdade por dupla inclusão, as duas inclusões também devem valer simultaneamente. As notas Subconjunto e Axioma da Extensão fundamentam essa conjunção.
+
+A distinção entre os tipos de problema depende do raciocínio: escrever “ou” por descuido pede uma correção pontual; usar efetivamente a disjunção para selecionar a interseção produziria um erro conceitual. A correção do conectivo não substitui a justificativa de admissibilidade de $Y$ nem a cadeia que fecha a volta.
+
+A escrita final também explicita os sinais de pertinência e elimina quantificadores sobrepostos na mesma variável. Um elemento arbitrário e o alcance correto da afirmação são suficientes para expressar cada inclusão, sem introduzir um existencial que altere seu sentido.
+
+### Dar alcance correto ao quantificador
+
+A equivalência entre pertencer a $Y$ e pertencer à interseção precisa ser afirmada para cada elemento considerado:
 
 $$
 \forall y:\quad\bigl(y\in Y\iff y\in A\cap B\bigr).
 $$
 
-Essa forma segue o critério de igualdade por pertinência da nota Axioma da Extensão e a escrita quantificada de inclusão da nota Subconjunto. Ela afirma, para cada elemento considerado, que pertencer a $Y$ equivale a pertencer à interseção.
+O quantificador abrange a equivalência inteira; $y\in Y$ é uma das afirmações comparadas. Escrever o universal junto dessa pertinência e ligá-lo depois a $y\in A\cap B$ não expressa com precisão o mesmo alcance.
 
-O usuário pediu que esse erro também fosse registrado e informou nova correção. A releitura confirmou os parênteses abrangendo a equivalência e o quantificador fora deles. O ponto foi encerrado como correção de escrita quantificacional efetivamente feita pelo usuário; não era uma nova ideia necessária à volta.
+A correção é de **escrita quantificacional**. Com a definição de $Y$ já adequada, ela registra corretamente a igualdade de elementos que fundamenta $Y=A\cap B$, sem exigir uma nova ideia para a volta. As notas Axioma da Extensão e Subconjunto fornecem os modelos de igualdade e inclusão quantificadas.
 
-### Relacionar antissimetria, mesmos elementos e a equivalência sobre Y
+### Relacionar mesmos elementos e antissimetria
 
-As reflexões do usuário procuravam ligar a igualdade de conjuntos à igualdade entre os elementos acompanhados. O agente retomou a nota Axioma da Extensão: escrever que, para cada $x\in X$, existe $u\in A\cap B$ com $x=u$ é afirmar que esse próprio $x$ pertence à interseção. O outro sentido começa com um elemento da interseção. As duas inclusões expressam que os conjuntos possuem os mesmos elementos, e a antissimetria fecha a igualdade.
+A relação entre igualdade por elementos e dupla inclusão se esclarece pela nota Axioma da Extensão. A afirmação
 
-Outra reflexão detectava um salto em $Y\subseteq X\iff Y\subseteq A\cap B$. A orientação explicou separadamente os sentidos, com base na nota Subconjunto e nas definições da nota Operações de Conjuntos. De $Y\subseteq X$, a propriedade (1) e a transitividade dão $Y\subseteq A$ e $Y\subseteq B$, logo $Y\subseteq A\cap B$. No sentido contrário, $Y\subseteq A\cap B$ dá as duas condições para (2), que fornece $Y\subseteq X$.
+$$
+\forall x\in X,\ \exists u\in A\cap B:\ x=u
+$$
 
-Essa explicação dos dois sentidos foi fornecida pelo agente e foi preservada como reflexão desenvolvida na solução. Não houve uma nova demonstração geral autônoma dessa equivalência pelo usuário. A revisão efetiva que fechou a tese empregou o caso particular definido por todos os elementos comuns.
+expressa $X\subseteq A\cap B$: o elemento $u$ é o próprio $x$, reconhecido como pertencente à interseção. O sentido contrário começa com um elemento arbitrário da interseção e verifica sua pertinência a $X$.
 
-A reflexão posterior $A\cap B=X=Y$ foi validada para esse $Y$ particular. A versão final distingue essa igualdade da afirmação sobre um $Y$ arbitrário, para o qual (2) exige apenas $Y\subseteq X$.
+Acompanhar uma única letra em cada parte preserva essa identidade do elemento. Não se exige que dois elementos escolhidos independentemente sejam iguais. As duas inclusões expressam os mesmos elementos nos dois conjuntos; a antissimetria da nota Subconjunto fornece o fechamento da igualdade.
 
-### Separar a demonstração concluída do apêndice pendente
+### Justificar os dois sentidos da equivalência sobre Y
 
-O usuário pediu que a discussão adicional sobre manter as propriedades da união fosse tratada como apêndice. A avaliação apontou que a condição $A\subseteq X$ e $B\subseteq X$, sozinha, fornece $A\cup B\subseteq X$. Para concluir $X=A\cup B$, é necessário recuperar também a segunda propriedade do exercício anterior. Isso se fundamenta nas notas Subconjunto e Operações de Conjuntos.
+A equivalência $Y\subseteq X\iff Y\subseteq A\cap B$ aparecia sem seus dois sentidos desenvolvidos. Sob as hipóteses (1) e (2), ela é válida, mas cada direção usa uma propriedade diferente.
 
-Também foram identificadas a necessidade de distinguir as regiões $A\setminus B$ e $B\setminus A$, a escrita de uma disjunção entre conjuntos e a atribuição do mesmo nome a duas regiões diferentes. Se a intenção é reuni-las, o conjunto é a diferença simétrica $(A\setminus B)\cup(B\setminus A)$, já tratada na nota Operações de Conjuntos.
+Se $Y\subseteq X$, a propriedade (1) e a transitividade dão $Y\subseteq A$ e $Y\subseteq B$. Pelas definições das notas Subconjunto e Operações de Conjuntos, $Y\subseteq A\cap B$.
 
-Por fim, manter as duas propriedades da união não torna $X=A\cap B$ sempre falso. Por exemplo, $A=B=X=\{1\}$ satisfaz essas propriedades e a igualdade. Sob as duas propriedades antigas, $X=A\cup B$, e a igualdade também com a interseção vale exatamente quando $A=B$. A distinção entre uma conclusão não ser garantida e ser sempre falsa foi apontada; a regra lógica formal não tem nota própria no acervo.
+Reciprocamente, se $Y\subseteq A\cap B$, então $Y\subseteq A$ e $Y\subseteq B$. A propriedade (2) fornece $Y\subseteq X$. A omissão se resolve pela identificação e justificação das duas direções, em vez de extrair a equivalência de uma única cadeia.
 
-Esses pontos foram diagnosticados e explicados, mas o apêndice não foi refeito pelo usuário. Permanecem pendentes de revisão. O destino proposto é Extras no acervo, separado da prova principal; nenhum apêndice corrigido foi criado nesta consolidação. O encerramento da volta não foi usado como evidência de resolução desses outros pontos.
+Para o conjunto particular definido por todos os elementos comuns, a conclusão da prova é $A\cap B=X=Y$. Um $Y$ arbitrário admissível em (2) precisa apenas satisfazer $Y\subseteq X$. A igualdade com $Y$ depende da escolha particular feita na volta.
 
-## Síntese do aprendizado
+## Síntese técnica
 
-A resolução final passou a justificar a inclusão que faltava por uma escolha admissível em (2): definir $Y$ pelos elementos comuns fixa $Y=A\cap B$, permite obter $Y\subseteq X$ e fecha $A\cap B\subseteq X$. Juntamente com $X\subseteq A\cap B$, derivada de (1), a antissimetria fornece a igualdade desejada.
+A resolução passou a justificar a volta mediante uma escolha admissível em (2). Definir $Y$ pelos elementos comuns fornece $Y=A\cap B$, verifica suas condições e permite encadear $A\cap B\subseteq Y\subseteq X$. Com $X\subseteq A\cap B$, derivada de (1), a antissimetria conclui $X=A\cap B$.
 
-As revisões efetivamente verificadas foram a correção dos conectivos na nova continuação, a definição exata de $Y$, a cadeia que demonstra a volta e o alcance do quantificador sobre a equivalência inteira. A conversa trabalhou ainda a diferença entre uma inclusão e sua reescrita, entre somente elementos comuns e todos eles, e entre o conjunto escolhido e um conjunto arbitrário da hipótese universal.
+Os pontos trabalhados distinguem o ajuste de símbolos do preenchimento de uma dependência lógica: corrigir a direção escrita não demonstra a inclusão; corrigir o conectivo não dispensa a aplicação da hipótese; dar alcance ao quantificador registra com precisão uma definição já adequada. Os fundamentos são as definições de inclusão e interseção, a transitividade, a antissimetria e o critério de igualdade por elementos.
 
-A prova foi elaborada com orientações explícitas, incluindo a escolha decisiva indicada pelo agente. O registro reconhece esse nível de ajuda e não transforma a conclusão do exercício em uma afirmação de domínio autônomo geral. Os lapsos de atenção e de escrita pedidos pelo usuário foram mantidos no histórico, embora não permaneçam na resolução consolidada.
-
-A demonstração principal está concluída. O apêndice permanece pendente; as propostas de extras e insights teóricos não foram criadas nesta etapa.
+O escopo concluído é a demonstração principal. O apêndice sobre manter as propriedades da união continua pendente de revisão: é necessário explicitar quais hipóteses são usadas, distinguir uma igualdade não garantida de uma igualdade sempre falsa e organizar as regiões exclusivas. Esses pontos não integram o fechamento da prova principal.
