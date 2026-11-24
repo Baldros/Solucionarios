@@ -166,3 +166,67 @@ Portanto, as propriedades (1) e (2) caracterizam a interseção: $X$ está conti
 > A\cap B=X=Y.
 > $$
 > A igualdade com $Y$ decorre de sua definição por todos os elementos comuns. Um conjunto arbitrário que esteja contido em $A$ e em $B$ precisa apenas estar contido em $X$, conforme (2).
+
+# Apendice
+
+## Uma reflexão sobre a verdade
+
+Eu acho que é interessante aproveitar essa dupla de exercícios para fazer uma reflexão sobre a “verdade” aqui.
+
+Note que, em ambas as questões, trabalhamos com os conjuntos $A$ e $B$, **para $A\neq B$**, e um conjunto $X$ que é formado mediante algumas propriedades. Temos um $Y$ também, mas o principal são esses.
+
+Note que, pelas propriedades do exercício 1,
+
+$$
+(1)\quad X\supseteq A\qquad\text{e}\qquad X\supseteq B.
+$$
+
+Ou seja, dado o enunciado e como visto no resultado anterior,
+
+$$
+X=(A\setminus B)\cup(A\cap B)\cup(B\setminus A).
+$$
+
+Ou seja, só pela (1) dessa forma, já temos que a proposição do exercício 2,
+
+$$
+X=A\cap B,
+$$
+
+é **falsa**. Não precisa nem checar a propriedade (2) para chegar nessa conclusão. Por isso que o enunciado da questão 2 pede explicitamente para enunciar, ou seja, reescrever as propriedades sob outra caracterização. Por isso, usamos
+
+$$
+(1)\quad X\subseteq A\qquad\text{e}\qquad X\subseteq B.
+$$
+
+que, levando o restante da resolução com a propriedade (2), como visto na parte de **demonstração** desta questão, podemos ai sim considerar
+
+$$
+X=\{x:\ x\in A\ \land\ x\in B\}=A\cap B,
+$$
+
+como **verdadeira**.
+
+Ou seja, é interessante pensar que a matemática nos demonstra que a verdade, de certa maneira, pelo menos sob certo contexto, é **relativa**.
+
+$$
+X\stackrel{?}{=}A\cap B
+$$
+
+Depende! A depender das propriedades de $X$, é verdadeira ou não.
+
+Note até que, em sendo,
+
+$$
+\begin{aligned}
+X_{A\cup B}&=A\cup B=(A\setminus B)\cup(A\cap B)\cup(B\setminus A),\\
+X_{A\cap B}&=A\cap B,
+\end{aligned}
+$$
+
+para $A \neq B$,
+
+$$
+X_{A\cap B}\subseteq X_{A\cup B},
+$$
+Mas eles não são iguais.
