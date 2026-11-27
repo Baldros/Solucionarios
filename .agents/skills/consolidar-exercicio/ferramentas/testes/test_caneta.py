@@ -25,9 +25,10 @@ def pagina_sintetica():
 def roteiro_valido():
     return {
         "marcas": [
-            {"tipo": "contornar", "area": [5, 8, 65, 16], "n": 1, "nota": "gap: falta A∩B ⊆ X"},
+            {"tipo": "contornar", "problema": "omissao", "area": [5, 8, 65, 16], "n": 1,
+             "nota": "gap: falta A∩B ⊆ X"},
             {"tipo": "certo", "area": [5, 28, 60, 36]},
-            {"tipo": "nota", "nota_em": [10, 80], "nota": "revise a conclusão"},
+            {"tipo": "nota", "problema": "erro", "nota_em": [10, 80], "nota": "conclusão sem base"},
         ]
     }
 
@@ -45,6 +46,9 @@ class TestRoteiro(unittest.TestCase):
                 {"tipo": "nota", "area": [1, 2, 3, 4]},
                 {"tipo": "caixa", "area": [1, 2, 3, 4], "notas": "x"},
                 {"tipo": "certo"},
+                {"tipo": "sublinhar", "area": [1, 2, 3, 4]},
+                {"tipo": "certo", "problema": "erro", "area": [1, 2, 3, 4]},
+                {"tipo": "caixa", "problema": "lapso", "area": [1, 2, 3, 4]},
             ]
         }
         erros = caneta.validar(roteiro)
@@ -55,6 +59,9 @@ class TestRoteiro(unittest.TestCase):
             "marca 4: o tipo 'nota'",
             "marca 5: chave desconhecida 'notas'",
             "marca 6: falta 'area'",
+            "marca 7: falta 'problema'",
+            "marca 8: o ✓ (certo) não leva 'problema'",
+            "marca 9: problema 'lapso' inválido",
         ]:
             self.assertTrue(any(e.startswith(trecho) for e in erros), (trecho, erros))
 
@@ -124,11 +131,28 @@ class TestArquivos(unittest.TestCase):
             self.assertEqual(original.shape, corrigida.shape)
             mudou = (original != corrigida).any(axis=-1)
             self.assertGreater(mudou.sum(), 1000)
-            # A caneta não se confunde com as famílias de tinta do estudante.
-            familias = tinta.classificar(corrigida)[mudou]
-            for familia in (tinta.AZUL, tinta.VERDE, tinta.VERMELHO):
-                self.assertFalse((familias == familia).any(), tinta.NOMES[familia])
-            self.assertTrue((familias == tinta.OUTRA).any())
+            self.assertFalse((tinta.classificar(corrigida)[mudou] == tinta.AZUL).any())
+
+    def test_cor_segue_o_diagnostico(self):
+        # Uma marca sem nota por linha: erro na primeira, omissão na segunda e ✓ na terceira.
+        roteiro_cores = {
+            "marcas": [
+                {"tipo": "contornar", "problema": "erro", "area": [5, 8, 65, 16]},
+                {"tipo": "sublinhar", "problema": "omissão", "area": [5, 28, 60, 36]},
+                {"tipo": "certo", "area": [5, 48, 62, 56]},
+            ]
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            imagem, roteiro = self.preparar(Path(tmp))
+            roteiro.write_text(json.dumps(roteiro_cores, ensure_ascii=False), encoding="utf-8")
+            saida = caneta.anotar(roteiro)
+            original, corrigida = tinta.carregar(imagem), tinta.carregar(saida)
+            mudou = (original != corrigida).any(axis=-1)
+            rotulos = tinta.classificar(corrigida)
+            for (y0, y1), familia in [((60, 180), tinta.VERMELHO), ((280, 380), tinta.OUTRA), ((440, 600), tinta.VERDE)]:
+                faixa = rotulos[y0:y1][mudou[y0:y1]]
+                self.assertGreater(len(faixa), 100)
+                self.assertGreater((faixa == familia).mean(), 0.9, tinta.NOMES[familia])
 
     def test_inventario_ignora_as_correcoes(self):
         with tempfile.TemporaryDirectory() as tmp:

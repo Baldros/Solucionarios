@@ -4,8 +4,9 @@ A página corrigida mostra onde está cada ponto: contorna, sublinha, risca,
 marca o que está certo, indica onde falta algo e deixa notas curtas e numeradas
 (①, ②, …). A explicação completa de cada número continua no feedback em texto.
 
-A caneta é laranja, fora das famílias de tinta do estudante (preto, azul, verde
-e vermelho). Tudo é gravado em <pasta da imagem>/.correcoes/, pasta oculta que o
+A cor vem do diagnóstico, nunca de uma escolha avulsa: vermelho para erro
+(de escrita ou conceitual), laranja para omissão ou gap e verde para o ✓ do que
+está certo. Tudo é gravado em <pasta da imagem>/.correcoes/, pasta oculta que o
 inventário da tinta ignora; o manuscrito original nunca é alterado.
 
 Uso, a partir da raiz do repositório:
@@ -24,10 +25,10 @@ O roteiro de Q2/6.png fica em Q2/.correcoes/6.json:
 
     {
       "marcas": [
-        {"tipo": "contornar", "area": [16, 36, 86, 41], "n": 1,
-         "nota": "só repete X ⊆ A∩B"},
-        {"tipo": "inserir", "area": [40, 52, 44, 54], "n": 2,
-         "nota": "e a volta, A∩B ⊆ X?"},
+        {"tipo": "contornar", "problema": "erro", "area": [16, 36, 86, 41], "n": 1,
+         "nota": "a mesma inclusão escrita ao contrário"},
+        {"tipo": "inserir", "problema": "omissao", "area": [40, 52, 44, 54], "n": 2,
+         "nota": "falta o sentido A∩B ⊆ X"},
         {"tipo": "certo", "area": [18, 81, 45, 86]}
       ]
     }
@@ -39,6 +40,9 @@ O roteiro de Q2/6.png fica em Q2/.correcoes/6.json:
   contém; uma área folgada basta. "ajustar": false desliga o ajuste.
 - "tipo": contornar, caixa, sublinhar, riscar, certo, inserir (circunflexo de
   inserção na base da área) ou nota (só o texto).
+- "problema": "erro" ou "omissao", obrigatório em toda marca exceto o ✓ (certo),
+  que é sempre verde e não leva problema. Marcas com o mesmo número podem ter
+  problemas diferentes, quando um lapso encobre uma justificativa ausente.
 - "n": número do ponto no feedback. "nota": texto curto, com símbolos Unicode
   (⊆ ∩ ∧ ∀ ⟹ ∉ …), colocado onde há menos tinta; "nota_em": [x, y] fixa seu
   canto superior esquerdo, em porcentagem.
@@ -58,15 +62,21 @@ from PIL import Image, ImageDraw, ImageFont
 import tinta
 
 PASTA = ".correcoes"
-# Laranja de matiz ≈ 29°: fica fora das famílias de tinta do estudante, inclusive
-# nas bordas suavizadas sobre o papel, que conservam o matiz.
-COR = (214, 104, 0)
+# A cor de cada marca é decidida pelo diagnóstico. As cópias em .correcoes/ ficam
+# fora do inventário, então o vermelho do erro não se mistura à abertura vermelha
+# do estudante.
+CORES = {
+    "erro": (205, 32, 38),  # lapso de escrita ou erro conceitual
+    "omissao": (230, 125, 0),  # omissão ou gap
+    "certo": (28, 140, 64),  # o ✓ do que está correto
+}
+PROBLEMAS = {"erro": "erro", "omissao": "omissao", "omissão": "omissao"}
 FUNDO_NOTA = (255, 255, 255, 230)
 COR_GRADE = (0, 150, 190)
 
 TIPOS = ("contornar", "caixa", "sublinhar", "riscar", "certo", "inserir", "nota")
 AJUSTAVEIS = {"contornar", "caixa", "sublinhar", "riscar", "certo"}
-CHAVES_MARCA = {"tipo", "area", "n", "nota", "nota_em", "ajustar"}
+CHAVES_MARCA = {"tipo", "problema", "area", "n", "nota", "nota_em", "ajustar"}
 CHAVES_ROTEIRO = {"imagem", "marcas"}
 
 # Medidas em unidades u = largura da página / 100.
@@ -197,7 +207,21 @@ def validar(roteiro: object) -> list[str]:
             erros.append(f"{onde}: 'n' deve ser um inteiro positivo.")
         if "ajustar" in marca and not isinstance(marca["ajustar"], bool):
             erros.append(f"{onde}: 'ajustar' deve ser true ou false.")
+        if tipo == "certo":
+            if "problema" in marca:
+                erros.append(f"{onde}: o ✓ (certo) não leva 'problema'.")
+        elif "problema" not in marca:
+            erros.append(f"{onde}: falta 'problema': \"erro\" ou \"omissao\".")
+        elif marca["problema"] not in PROBLEMAS:
+            erros.append(f"{onde}: problema '{marca['problema']}' inválido; use \"erro\" ou \"omissao\".")
     return erros
+
+
+def cor_da(marca: dict) -> tuple[int, int, int]:
+    """A cor da marca segundo o diagnóstico: erro, omissão ou ✓."""
+    if marca["tipo"] == "certo":
+        return CORES["certo"]
+    return CORES[PROBLEMAS[marca["problema"]]]
 
 
 def imagem_do_roteiro(caminho: Path, roteiro: dict) -> Path:
@@ -414,6 +438,7 @@ class Pagina:
 class Nota:
     linhas: list[str]
     numero: int | None
+    cor: tuple[int, int, int]
     caixa: Caixa | None = None
 
 
@@ -434,25 +459,25 @@ class Caneta:
 
     # Marcas ----------------------------------------------------------------
 
-    def marcar(self, tipo: str, alvo: Caixa) -> Caixa:
+    def marcar(self, tipo: str, alvo: Caixa, cor: tuple[int, int, int]) -> Caixa:
         """Desenha a marca e devolve a caixa que ela ocupa."""
         d, t, f = self.desenho, self.traco, FOLGA * self.u
         cx, cy = alvo.centro
         if tipo == "contornar":
             c = alvo.expandir(f)
-            d.rounded_rectangle([c.x0, c.y0, c.x1, c.y1], radius=min(c.largura, c.altura) / 2, outline=COR, width=t)
+            d.rounded_rectangle([c.x0, c.y0, c.x1, c.y1], radius=min(c.largura, c.altura) / 2, outline=cor, width=t)
             return c
         if tipo == "caixa":
             c = alvo.expandir(f)
-            d.rectangle([c.x0, c.y0, c.x1, c.y1], outline=COR, width=t)
+            d.rectangle([c.x0, c.y0, c.x1, c.y1], outline=cor, width=t)
             return c
         if tipo == "sublinhar":
             y = alvo.y1 + f
-            d.line([(alvo.x0, y), (alvo.x1, y)], fill=COR, width=t)
+            d.line([(alvo.x0, y), (alvo.x1, y)], fill=cor, width=t)
             return Caixa(alvo.x0, alvo.y0, alvo.x1, y + t)
         if tipo == "riscar":
             inclinacao = 0.15 * alvo.altura
-            d.line([(alvo.x0 - f, cy + inclinacao), (alvo.x1 + f, cy - inclinacao)], fill=COR, width=t)
+            d.line([(alvo.x0 - f, cy + inclinacao), (alvo.x1 + f, cy - inclinacao)], fill=cor, width=t)
             return alvo
         if tipo == "certo":
             # À direita do trecho ou sobre seu canto superior direito, onde houver
@@ -466,27 +491,27 @@ class Caneta:
             )
             x, y = lugares[i]
             pontos = [(x, y), (x + 0.35 * s, y + 0.4 * s), (x + s, y - 0.55 * s)]
-            d.line(pontos, fill=COR, width=t, joint="curve")
+            d.line(pontos, fill=cor, width=t, joint="curve")
             return caixas[i]
         if tipo == "inserir":
             s = 2.2 * self.u
             base = alvo.y1 + 0.3 * s
             pontos = [(cx - s / 2, base + s / 2), (cx, base - s / 2), (cx + s / 2, base + s / 2)]
-            d.line(pontos, fill=COR, width=t, joint="curve")
+            d.line(pontos, fill=cor, width=t, joint="curve")
             return Caixa(cx - s / 2, base - s / 2, cx + s / 2, base + s / 2)
         return alvo  # nota: só o texto
 
-    def numero(self, n: int, x: float, y: float) -> None:
-        """Número branco num disco laranja com canto superior esquerdo em (x, y)."""
+    def numero(self, n: int, x: float, y: float, cor: tuple[int, int, int]) -> None:
+        """Número branco num disco da cor da marca, com canto superior esquerdo em (x, y)."""
         r = self.diametro / 2
-        self.desenho.ellipse([x, y, x + 2 * r, y + 2 * r], fill=COR)
+        self.desenho.ellipse([x, y, x + 2 * r, y + 2 * r], fill=cor)
         self.desenho.text((x + r, y + r), str(n), font=self.numeros, fill="white", anchor="mm")
 
-    def seta(self, origem: tuple[float, float], destino: tuple[float, float]) -> None:
+    def seta(self, origem: tuple[float, float], destino: tuple[float, float], cor: tuple[int, int, int]) -> None:
         (x0, y0), (x1, y1) = origem, destino
         if math.hypot(x1 - x0, y1 - y0) < 0.6 * self.u:
             return
-        self.desenho.line([origem, destino], fill=COR, width=self.traco)
+        self.desenho.line([origem, destino], fill=cor, width=self.traco)
         angulo = math.atan2(y1 - y0, x1 - x0)
         ponta = 4 * self.traco
         self.desenho.polygon(
@@ -495,18 +520,18 @@ class Caneta:
                 (x1 - ponta * math.cos(angulo - 0.45), y1 - ponta * math.sin(angulo - 0.45)),
                 (x1 - ponta * math.cos(angulo + 0.45), y1 - ponta * math.sin(angulo + 0.45)),
             ],
-            fill=COR,
+            fill=cor,
         )
 
     # Notas -----------------------------------------------------------------
 
-    def preparar(self, texto: str, numero: int | None) -> tuple[Nota, float, float]:
+    def preparar(self, texto: str, numero: int | None, cor: tuple[int, int, int]) -> tuple[Nota, float, float]:
         recuo = self.diametro + 0.5 * self.u if numero else 0
         largura_max = NOTA_LARGURA * self.u - recuo - 2 * self.margem
         linhas = self.escrita.quebrar(texto, largura_max)
         largura = recuo + max(self.escrita.largura(l) for l in linhas) + 2 * self.margem
         altura = max(len(linhas) * self.escrita.altura_linha, self.diametro) + 2 * self.margem
-        return Nota(linhas, numero), largura, altura
+        return Nota(linhas, numero, cor), largura, altura
 
     def fundo(self, nota: Nota) -> None:
         c = nota.caixa
@@ -519,10 +544,10 @@ class Caneta:
         x = c.x0 + m
         if nota.numero:
             topo_numero = c.y0 + m + (self.escrita.altura_linha - self.diametro) / 2
-            self.numero(nota.numero, x, max(c.y0 + m, topo_numero))
+            self.numero(nota.numero, x, max(c.y0 + m, topo_numero), nota.cor)
             x += self.diametro + 0.5 * self.u
         for i, linha in enumerate(nota.linhas):
-            self.escrita.escrever(self.desenho, x, c.y0 + m + i * self.escrita.altura_linha, linha, COR)
+            self.escrita.escrever(self.desenho, x, c.y0 + m + i * self.escrita.altura_linha, linha, nota.cor)
 
 
 def anotar(caminho: Path, saida: Path | None = None) -> Path:
@@ -551,7 +576,7 @@ def anotar(caminho: Path, saida: Path | None = None) -> Path:
         else:
             x, y = pagina.ponto(marca["nota_em"])
             alvo = Caixa(x, y, x + 1, y + 1)
-        ocupada = caneta.marcar(tipo, alvo)
+        ocupada = caneta.marcar(tipo, alvo, cor_da(marca))
         if tipo != "nota":
             pagina.ocupadas.append(ocupada.expandir(caneta.traco))
         feitas[indice] = (marca, ocupada)
@@ -561,9 +586,11 @@ def anotar(caminho: Path, saida: Path | None = None) -> Path:
         n = marca.get("n")
         if "nota" not in marca:
             if n:
-                caneta.numero(n, ocupada.x0 - caneta.diametro * 0.8, ocupada.y0 - caneta.diametro * 0.8)
+                caneta.numero(
+                    n, ocupada.x0 - caneta.diametro * 0.8, ocupada.y0 - caneta.diametro * 0.8, cor_da(marca)
+                )
             continue
-        nota, largura, altura = caneta.preparar(marca["nota"], n)
+        nota, largura, altura = caneta.preparar(marca["nota"], n, cor_da(marca))
         if "nota_em" in marca:
             x, y = pagina.ponto(marca["nota_em"])
             nota.caixa = Caixa(x, y, x + largura, y + altura)
@@ -580,7 +607,7 @@ def anotar(caminho: Path, saida: Path | None = None) -> Path:
             if tipo == "contornar":
                 destino = borda_arredondada(ocupada, origem)
                 origem, _ = pontos_proximos(nota.caixa, Caixa(*destino, *destino))
-            caneta.seta(origem, destino)
+            caneta.seta(origem, destino, nota.cor)
         caneta.escrever(nota)
 
     pagina_rgba = Image.fromarray(rgb).convert("RGBA")

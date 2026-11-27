@@ -54,13 +54,23 @@ Lapsos pontuais podem ser corrigidos diretamente, sem abertura vermelha. Retraba
 
 Como um professor, marque os apontamentos sobre uma cópia da página com `caneta.py`. A página corrigida mostra **onde** está cada ponto; o feedback em texto continua trazendo o apontamento completo, ligado à marca pelo número (①, ②, …). A imagem não substitui a classificação, a evidência, o fundamento nem o impacto.
 
+A cor vem do diagnóstico. Cada marca do roteiro declara seu `problema`, e a ferramenta aplica o padrão; não escolha cores avulsas.
+
+| Cor | Diagnóstico | No roteiro |
+|---|---|---|
+| Vermelho | Erro: de escrita ou atenção, ou conceitual | `"problema": "erro"` |
+| Laranja | Omissão ou gap | `"problema": "omissao"` |
+| Verde | ✓ no que está correto ou foi resolvido | `"tipo": "certo"`, sem `problema` |
+
+Quando um lapso encobrir uma justificativa ausente, marque as duas camadas separadamente, cada uma com sua cor, como no diagnóstico.
+
 - Gere a grade da página e leia nela as áreas, em porcentagem; uma área folgada basta, pois a marca se ajusta à tinta. Grave o roteiro em `<pasta da imagem>/.correcoes/<nome>.json` e gere a página corrigida. O original nunca é alterado, e a pasta oculta fica fora do inventário.
 - Contorne ou enquadre o trecho com problema; sublinhe uma palavra ou expressão; risque só o que deve sair; use a inserção onde falta um passo e o ✓ no que está correto e sustenta o argumento. Numere cada ponto do feedback; um mesmo número pode marcar mais de um lugar.
-- As notas são curtas e seguem a orientação proporcional: num lapso de escrita, podem mostrar o ajuste; num gap ou erro conceitual, nomeiam o problema ou dão a pista adequada ao bloqueio, sem entregar a solução. Fundamentos são citados pelo nome da nota.
+- As notas apontam, não corrigem: nomeiam o problema e o fundamento, pelo nome da nota, sem escrever a fórmula, a tradução ou o passo corrigidos, nem em lapsos de escrita. Numa omissão, dizem o que falta, não como fazê-lo. A correção cabe ao estudante; pistas mais desenvolvidas ficam no feedback em texto, proporcionais ao bloqueio.
 - Leia a página gerada antes de apresentá-la. Se uma marca errar o alvo ou uma nota cobrir a escrita, ficar ambígua ou ilegível, corrija o roteiro e gere de novo. Apresente as páginas corrigidas junto do feedback, anexando-as quando o ambiente permitir.
 - Na releitura de uma revisão, atualize ou crie o roteiro da imagem efetivamente alterada: ✓ no que foi resolvido e marcas apenas no que continua pendente ou surgiu. Não reabra com marcas uma pendência já justificada.
 
-O laranja da caneta pertence ao agente e fica fora das famílias de tinta do estudante.
+O vermelho e o verde da caneta só existem nas cópias de `.correcoes/`, que o inventário ignora; não os confunda com a abertura vermelha nem com a metaconversa verde do estudante.
 
 ## Etapa 3 — Consolidar a solução
 
@@ -107,7 +117,7 @@ Execute com `.venv\Scripts\python -X utf8 .agents/skills/consolidar-exercicio/fe
 | `tinta.py faixas <imagem…>` | Cores e posições por faixa. |
 | `tinta.py camadas <imagem…>` | Imagem por família, incluindo vermelho. |
 | `caneta.py grade <imagem…>` | Página com grade em porcentagem e faixas numeradas, para localizar trechos. |
-| `caneta.py anotar <roteiro.json…>` | Página corrigida em `.correcoes/`, com as marcas e notas do roteiro; formato no cabeçalho do script. |
+| `caneta.py anotar <roteiro.json…>` | Página corrigida em `.correcoes/`, com as marcas e notas do roteiro na cor de cada diagnóstico; formato no cabeçalho do script. |
 | `verificar.py --etapa solucao <arquivo>` | Conferência intermediária; só dispensa o Processo ausente. |
 | `verificar.py [caminhos…]` | Conferência completa; exige os pares e aceita registros históricos. |
 
