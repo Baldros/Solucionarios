@@ -25,13 +25,13 @@ O trabalho tem cinco etapas, com conclusões e aprovações próprias. A soluç�
 4. Leia [Diagnóstico e revisão](references/diagnostico.md). Separe **escrita ou atenção**, **erro conceitual** e **omissão ou gap**; podem coexistir no mesmo trecho. Resolva dúvidas de leitura antes de fechar o diagnóstico.
 5. Mantenha o mapa de cobertura, conforme [Arquivos e memória de trabalho](references/arquivos.md), distinguindo conteúdo da tentativa, orientação e revisão efetiva.
 
-Conclua com um parecer sobre os acertos e os problemas que bloqueiam a resposta. Apresente o foco de trabalho e proponha passar à orientação. O pedido inicial autoriza o escrutínio; pedidos explícitos que já abranjam mais etapas dispensam renovar a mesma autorização.
+Conclua com um parecer sobre os acertos e os problemas que bloqueiam a resposta, acompanhado das páginas corrigidas (veja Correções sobre as páginas). Apresente o foco de trabalho e proponha passar à orientação. O pedido inicial autoriza o escrutínio; pedidos explícitos que já abranjam mais etapas dispensam renovar a mesma autorização.
 
 ## Etapa 2 — Orientação e revisão iterativas
 
 **Enquanto houver erro ou gap relevante, não prepare uma solução integral pronta para aprovação.**
 
-- Localize o trecho e exponha a classificação, a evidência, o fundamento teórico e o impacto no argumento: qual parte continua válida, qual conclusão está comprometida e que alteração é necessária. Separe as camadas quando um lapso encobrir uma justificativa ausente.
+- Localize o trecho, marque-o na página corrigida e exponha a classificação, a evidência, o fundamento teórico e o impacto no argumento: qual parte continua válida, qual conclusão está comprometida e que alteração é necessária. Separe as camadas quando um lapso encobrir uma justificativa ausente.
 - Trabalhe um ponto ou grupo dependente de pontos por vez. Use explicações, pistas, exemplos e contraexemplos proporcionais ao bloqueio. Não transforme uma correção pontual de escrita em exigência de reconstruir um raciocínio já correto.
 - Indique o trecho a corrigir ou desenvolver. Aguarde a reformulação; quando houver aviso de alteração, **releia o arquivo ou argumento efetivamente modificado**. Uma intenção de corrigir ou um OK à explicação não prova fechamento.
 - Para cada revisão, diga precisamente o que foi resolvido e por qual argumento, e o que ainda falta. Não reabra uma pendência já justificada apenas para exigir outra redação equivalente. Registre as evidências na memória de trabalho.
@@ -49,6 +49,18 @@ As cores são **famílias de tom**, não valores RGB exatos. Preto leve pode par
 - **Vermelho — início de correção ou aprofundamento:** durante as revisões, uma frase vermelha identifica o erro ou gap a trabalhar. O desenvolvimento seguinte mantém os papéis do preto, azul e verde. O contexto determina seu fim, sem símbolo de encerramento obrigatório. A frase não é uma reflexão azul nem entra automaticamente na solução.
 
 Lapsos pontuais podem ser corrigidos diretamente, sem abertura vermelha. Retrabalhos e aprofundamentos usam essa abertura e podem ser inseridos como `x.1`, `x.2` entre `x` e a próxima parte. Leia na ordem `6`, `6.1`, `6.2`, `6.10`, `7`; relacione cada inserção ao trecho que ela corrige. Não suponha que toda a parte anterior foi substituída: confira seu alcance pelo conteúdo. A ferramenta de cores localiza tinta; o significado e a validade dependem da leitura.
+
+## Correções sobre as páginas
+
+Como um professor, marque os apontamentos sobre uma cópia da página com `caneta.py`. A página corrigida mostra **onde** está cada ponto; o feedback em texto continua trazendo o apontamento completo, ligado à marca pelo número (①, ②, …). A imagem não substitui a classificação, a evidência, o fundamento nem o impacto.
+
+- Gere a grade da página e leia nela as áreas, em porcentagem; uma área folgada basta, pois a marca se ajusta à tinta. Grave o roteiro em `<pasta da imagem>/.correcoes/<nome>.json` e gere a página corrigida. O original nunca é alterado, e a pasta oculta fica fora do inventário.
+- Contorne ou enquadre o trecho com problema; sublinhe uma palavra ou expressão; risque só o que deve sair; use a inserção onde falta um passo e o ✓ no que está correto e sustenta o argumento. Numere cada ponto do feedback; um mesmo número pode marcar mais de um lugar.
+- As notas são curtas e seguem a orientação proporcional: num lapso de escrita, podem mostrar o ajuste; num gap ou erro conceitual, nomeiam o problema ou dão a pista adequada ao bloqueio, sem entregar a solução. Fundamentos são citados pelo nome da nota.
+- Leia a página gerada antes de apresentá-la. Se uma marca errar o alvo ou uma nota cobrir a escrita, ficar ambígua ou ilegível, corrija o roteiro e gere de novo. Apresente as páginas corrigidas junto do feedback, anexando-as quando o ambiente permitir.
+- Na releitura de uma revisão, atualize ou crie o roteiro da imagem efetivamente alterada: ✓ no que foi resolvido e marcas apenas no que continua pendente ou surgiu. Não reabra com marcas uma pendência já justificada.
+
+O laranja da caneta pertence ao agente e fica fora das famílias de tinta do estudante.
 
 ## Etapa 3 — Consolidar a solução
 
@@ -80,7 +92,7 @@ A aprovação para consolidar não substitui o critério de qualidade. Preserve 
 
 Siga os critérios de escrita e as convenções matemáticas de [consolidar-manuscritos](../../../../Notas-de-Estudo/.agents/skills/consolidar-manuscritos/SKILL.md). Em particular: $\subseteq$ é a inclusão ampla e $\subset$ a estrita; adapte o amplo do Elon. Use $\mathbb N=\{0,1,2,\ldots\}$ e $\mathbb N^*=\{1,2,3,\ldots\}$, explicitando a adaptação do livro. Preserve quantificadores, hipóteses e alcance lógico.
 
-Use os auxiliares existentes; não crie scripts avulsos para cores ou lint. Preparação, quando necessária:
+Use os auxiliares existentes; não crie scripts avulsos para cores, lint ou correções nas imagens. Preparação, quando necessária:
 
 ```powershell
 py -V:3.13 -m venv .venv
@@ -94,6 +106,8 @@ Execute com `.venv\Scripts\python -X utf8 .agents/skills/consolidar-exercicio/fe
 | `tinta.py inventario <pasta>` | Cores e possíveis versões, na ordem de leitura das inserções. |
 | `tinta.py faixas <imagem…>` | Cores e posições por faixa. |
 | `tinta.py camadas <imagem…>` | Imagem por família, incluindo vermelho. |
+| `caneta.py grade <imagem…>` | Página com grade em porcentagem e faixas numeradas, para localizar trechos. |
+| `caneta.py anotar <roteiro.json…>` | Página corrigida em `.correcoes/`, com as marcas e notas do roteiro; formato no cabeçalho do script. |
 | `verificar.py --etapa solucao <arquivo>` | Conferência intermediária; só dispensa o Processo ausente. |
 | `verificar.py [caminhos…]` | Conferência completa; exige os pares e aceita registros históricos. |
 

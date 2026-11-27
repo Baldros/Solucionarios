@@ -78,6 +78,8 @@ O resultado, seus sentidos e o alcance das hipóteses precisam estar justificado
 
 O mapa `Images/<livro>/<Capitulo>/mapa-cobertura.md` é memória recuperável, ignorada pelo git e sem wikilinks. Nele, a localização dos manuscritos e o histórico das intervenções são úteis para retomar o trabalho. Eles não pertencem ao Processo técnico.
 
+As páginas corrigidas e seus roteiros, em `.correcoes/` ao lado de cada imagem, também são material de trabalho: mostram o que foi marcado na última rodada daquela página. Não substituem o registro do diagnóstico no mapa nem entram na solução ou no Processo.
+
 Registre por exercício:
 
 - Enunciado, hipóteses, tese e concepção.
